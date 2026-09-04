@@ -1,0 +1,32 @@
+{
+  "name": "onefi-marketplace-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "db:migrate": "npx prisma migrate dev",
+    "db:push": "npx prisma db push",
+    "db:seed": "node prisma/seed.js",
+    "db:studio": "npx prisma studio",
+    "db:generate": "npx prisma generate"
+  },
+  "keywords": ["1fi", "marketplace", "emi", "fintech"],
+  "author": "",
+  "license": "ISC",
+  "description": "1Fi Marketplace Backend - REST API for products, variants, and EMI plans",
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^7.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^7.10.0"
+  }
+}

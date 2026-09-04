@@ -1,0 +1,61 @@
+// 1Fi Marketplace - Database Schema
+// PostgreSQL database with normalized tables for products, variants, and EMI plans
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  slug        String    @unique
+  description String?
+  brand       String?
+  category    String?
+  mrp         Float
+  price       Float
+  image       String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  variants    Variant[]
+  emiPlans    EmiPlan[]
+
+  @@map("products")
+}
+
+model Variant {
+  id        Int      @id @default(autoincrement())
+  productId Int      @map("product_id")
+  color     String?
+  storage   String?
+  finish    String?
+  price     Float
+  image     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("variants")
+}
+
+model EmiPlan {
+  id            Int      @id @default(autoincrement())
+  productId     Int      @map("product_id")
+  monthlyAmount Float    @map("monthly_amount")
+  tenureMonths  Int      @map("tenure_months")
+  interestRate  Float    @map("interest_rate")
+  cashback      Float    @default(0)
+  createdAt     DateTime @default(now()) @map("created_at")
+
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("emi_plans")
+}
