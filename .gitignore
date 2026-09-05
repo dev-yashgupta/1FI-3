@@ -1,36 +1,36 @@
-# Dependencies
-node_modules/
-.pnp
-.pnp.js
+# ── Flutter ──────────────────────────────────────────
+onefi_app/.dart_tool/
+onefi_app/.flutter-plugins
+onefi_app/.flutter-plugins-dependencies
+onefi_app/build/
+onefi_app/.packages
+onefi_app/pubspec.lock
 
-# Environment variables
+# ── Node / Backend ───────────────────────────────────
+backend/node_modules/
+backend/.env
+backend/generated/
+
+# ── Environment / Secrets ────────────────────────────
 .env
+*.env
 .env.local
 .env.*.local
 
-# Build output
-dist/
-build/
+# ── OS ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
 
-# IDE
-.vscode/
+# ── IDE ──────────────────────────────────────────────
 .idea/
+*.iml
+.vscode/
 *.swp
 *.swo
 
-# OS
-.DS_Store
-Thumbs.db
-
-# Prisma
-generated/
-
-# Logs
+# ── Logs ─────────────────────────────────────────────
 *.log
 npm-debug.log*
-
-# Misc
-.agents/
-.claude/
-.windsurf/
-skills-lock.json
+yarn-debug.log*
+yarn-error.log*
