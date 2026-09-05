@@ -183,7 +183,7 @@ class _LoadingGrid extends StatelessWidget {
         mainAxisSpacing: 12,
       ),
       itemCount: 6,
-      itemBuilder: (_, __) => const ProductCardShimmer(),
+      itemBuilder: (_, _i) => const ProductCardShimmer(),
     );
   }
 }

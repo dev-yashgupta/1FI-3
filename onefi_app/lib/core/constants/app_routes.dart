@@ -19,13 +19,13 @@ final appRouter = GoRouter(
     // ── Shell (bottom nav) ───────────────────────────
     ShellRoute(
       navigatorKey: _shellNavigatorKey,
-      builder: (_, __, child) => AppShell(child: child),
+      builder: (context, routerState, child) => AppShell(child: child),
       routes: [
-        GoRoute(path: '/home', builder: (_, _s) => const HomeScreen()),
-        GoRoute(path: '/shop', builder: (_, _s) => const ShopScreen()),
-        GoRoute(path: '/emi-dues', builder: (_, _s) => const EmiDuesScreen()),
-        GoRoute(path: '/limit', builder: (_, _s) => const LimitScreen()),
-        GoRoute(path: '/profile', builder: (_, _s) => const ProfileScreen()),
+        GoRoute(path: '/home', builder: (context, routerState) => const HomeScreen()),
+        GoRoute(path: '/shop', builder: (context, routerState) => const ShopScreen()),
+        GoRoute(path: '/emi-dues', builder: (context, routerState) => const EmiDuesScreen()),
+        GoRoute(path: '/limit', builder: (context, routerState) => const LimitScreen()),
+        GoRoute(path: '/profile', builder: (context, routerState) => const ProfileScreen()),
       ],
     ),
 
@@ -33,12 +33,12 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/marketplace',
       parentNavigatorKey: _rootNavigatorKey,
-      builder: (_, _s) => const MarketplaceScreen(),
+      builder: (context, routerState) => const MarketplaceScreen(),
     ),
     GoRoute(
       path: '/marketplace/:slug',
       parentNavigatorKey: _rootNavigatorKey,
-      builder: (_, state) => ProductDetailScreen(
+      builder: (context, state) => ProductDetailScreen(
         slug: state.pathParameters['slug']!,
       ),
     ),
