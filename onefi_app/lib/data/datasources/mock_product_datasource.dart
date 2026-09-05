@@ -1,14 +1,17 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import '../models/product.dart';
+import 'product_datasource.dart';
 
-/// Loads product data from the local mock JSON asset.
-/// Swap this for [RemoteProductDataSource] when the backend is live.
-class MockProductDataSource {
+/// Loads product data from the bundled mock JSON asset.
+/// Implements [ProductDataSource] — drop-in replacement for [RemoteProductDataSource].
+class MockProductDataSource implements ProductDataSource {
   static const String _assetPath = 'assets/mock/products.json';
 
+  @override
   Future<List<Product>> getProducts() async {
-    await Future.delayed(const Duration(milliseconds: 800)); // simulate network
+    // Simulate realistic network latency
+    await Future.delayed(const Duration(milliseconds: 800));
     final String raw = await rootBundle.loadString(_assetPath);
     final List<dynamic> json = jsonDecode(raw) as List<dynamic>;
     return json
@@ -16,6 +19,7 @@ class MockProductDataSource {
         .toList();
   }
 
+  @override
   Future<Product?> getProductBySlug(String slug) async {
     final products = await getProducts();
     try {

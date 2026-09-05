@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../data/datasources/api_client.dart';
 import '../../../data/models/emi_plan.dart';
 import '../../../data/models/product.dart';
 import '../../../data/models/product_variant.dart';
@@ -7,10 +8,10 @@ import '../../../data/repositories/product_repository.dart';
 // ─── Repository provider ──────────────────────────────────────────────────────
 
 final productRepositoryProvider = Provider<ProductRepository>((ref) {
-  return ProductRepository();
+  return ProductRepository(); // datasource selected by ProductRepository._defaultDataSource()
 });
 
-// ─── Products list state ──────────────────────────────────────────────────────
+// ─── Marketplace list state ───────────────────────────────────────────────────
 
 enum MarketplaceStatus { initial, loading, success, error, empty }
 
@@ -60,10 +61,15 @@ class MarketplaceNotifier extends StateNotifier<MarketplaceState> {
           products: products,
         );
       }
+    } on ApiException catch (e) {
+      state = state.copyWith(
+        status: MarketplaceStatus.error,
+        errorMessage: e.message,
+      );
     } catch (e) {
       state = state.copyWith(
         status: MarketplaceStatus.error,
-        errorMessage: e.toString(),
+        errorMessage: 'Unable to load products. Please try again.',
       );
     }
   }
@@ -103,8 +109,10 @@ class ProductDetailState {
     return ProductDetailState(
       status: status ?? this.status,
       product: product ?? this.product,
-      selectedVariant: clearVariant ? null : (selectedVariant ?? this.selectedVariant),
-      selectedEmiPlan: clearEmiPlan ? null : (selectedEmiPlan ?? this.selectedEmiPlan),
+      selectedVariant:
+          clearVariant ? null : (selectedVariant ?? this.selectedVariant),
+      selectedEmiPlan:
+          clearEmiPlan ? null : (selectedEmiPlan ?? this.selectedEmiPlan),
       errorMessage: errorMessage,
     );
   }
@@ -112,13 +120,17 @@ class ProductDetailState {
   bool get isLoading => status == MarketplaceStatus.loading;
   bool get hasError => status == MarketplaceStatus.error;
   bool get isSuccess => status == MarketplaceStatus.success;
+
+  /// Proceed CTA is enabled only when both variant and EMI plan are chosen.
   bool get canProceed => selectedVariant != null && selectedEmiPlan != null;
 }
 
-class ProductDetailNotifier extends StateNotifier<ProductDetailState> {
+class ProductDetailNotifier
+    extends StateNotifier<ProductDetailState> {
   final ProductRepository _repository;
 
-  ProductDetailNotifier(this._repository) : super(const ProductDetailState());
+  ProductDetailNotifier(this._repository)
+      : super(const ProductDetailState());
 
   Future<void> loadProduct(String slug) async {
     state = state.copyWith(
@@ -128,34 +140,43 @@ class ProductDetailNotifier extends StateNotifier<ProductDetailState> {
     );
     try {
       final product = await _repository.getProductBySlug(slug);
+
       if (product == null) {
         state = state.copyWith(
           status: MarketplaceStatus.error,
           errorMessage: 'Product not found',
         );
-      } else {
-        // Auto-select first in-stock variant
-        final firstVariant = product.variants.isNotEmpty
-            ? product.variants.firstWhere(
-                (v) => v.inStock,
-                orElse: () => product.variants.first,
-              )
-            : null;
-        state = state.copyWith(
-          status: MarketplaceStatus.success,
-          product: product,
-          selectedVariant: firstVariant,
-        );
+        return;
       }
+
+      // Auto-select first in-stock variant
+      final firstVariant = product.variants.isNotEmpty
+          ? product.variants.firstWhere(
+              (v) => v.inStock,
+              orElse: () => product.variants.first,
+            )
+          : null;
+
+      state = state.copyWith(
+        status: MarketplaceStatus.success,
+        product: product,
+        selectedVariant: firstVariant,
+      );
+    } on ApiException catch (e) {
+      state = state.copyWith(
+        status: MarketplaceStatus.error,
+        errorMessage: e.message,
+      );
     } catch (e) {
       state = state.copyWith(
         status: MarketplaceStatus.error,
-        errorMessage: e.toString(),
+        errorMessage: 'Unable to load product. Please try again.',
       );
     }
   }
 
   void selectVariant(ProductVariant variant) {
+    // Changing variant clears EMI plan (price may differ)
     state = state.copyWith(selectedVariant: variant, clearEmiPlan: true);
   }
 

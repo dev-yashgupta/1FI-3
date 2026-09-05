@@ -15,19 +15,19 @@ abstract class AppConstants {
   static const double radiusXL = 24.0;
   static const double radiusPill = 100.0;
 
-  // ── Elevation ─────────────────────────────────────
-  static const double elevationCard = 0.0;
-  static const double elevationModal = 8.0;
-
   // ── Animation durations ───────────────────────────
   static const Duration animFast = Duration(milliseconds: 150);
   static const Duration animNormal = Duration(milliseconds: 250);
   static const Duration animSlow = Duration(milliseconds: 400);
 
-  // ── API ───────────────────────────────────────────
-  /// Change this to your deployed backend URL.
-  /// For local dev use http://10.0.2.2:3000 (Android emulator)
-  /// or http://localhost:3000 (iOS simulator / web)
+  // ── API base URL ──────────────────────────────────
+  /// Override at build time:
+  ///   flutter run --dart-define=API_BASE_URL=http://192.168.1.x:3000
+  ///
+  /// Defaults:
+  ///   Android emulator → 10.0.2.2:3000  (maps to host machine localhost)
+  ///   iOS simulator    → 127.0.0.1:3000
+  ///   Physical device  → your machine's LAN IP, e.g. 192.168.1.100:3000
   static const String apiBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
     defaultValue: 'http://10.0.2.2:3000',
