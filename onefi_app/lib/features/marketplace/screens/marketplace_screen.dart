@@ -89,7 +89,7 @@ class _MarketplaceScreenState extends ConsumerState<MarketplaceScreen> {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               itemCount: _categories.length,
-              separatorBuilder: (_, _i) => const SizedBox(width: 8),
+              separatorBuilder: (context, index) => const SizedBox(width: 8),
               itemBuilder: (_, i) {
                 final cat = _categories[i];
                 final selected = cat == _selectedCategory;
@@ -183,7 +183,7 @@ class _LoadingGrid extends StatelessWidget {
         mainAxisSpacing: 12,
       ),
       itemCount: 6,
-      itemBuilder: (_, _i) => const ProductCardShimmer(),
+      itemBuilder: (context, index) => const ProductCardShimmer(),
     );
   }
 }
