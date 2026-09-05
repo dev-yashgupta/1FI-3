@@ -192,7 +192,7 @@ class _BrandRow extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: _brands.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, _i) => const SizedBox(width: 12),
         itemBuilder: (_, i) => Container(
           width: 72,
           decoration: BoxDecoration(

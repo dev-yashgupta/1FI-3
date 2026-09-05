@@ -27,8 +27,8 @@ class AppNetworkImage extends StatelessWidget {
       width: width,
       height: height,
       fit: fit,
-      placeholder: (_, __) => _Shimmer(width: width, height: height),
-      errorWidget: (_, __, ___) => _ErrorPlaceholder(width: width, height: height),
+      placeholder: (_, _u) => _Shimmer(width: width, height: height),
+      errorWidget: (_, _u, _e) => _ErrorPlaceholder(width: width, height: height),
     );
 
     if (borderRadius != null) {

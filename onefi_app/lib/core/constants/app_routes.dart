@@ -21,11 +21,11 @@ final appRouter = GoRouter(
       navigatorKey: _shellNavigatorKey,
       builder: (_, __, child) => AppShell(child: child),
       routes: [
-        GoRoute(path: '/home', builder: (_, __) => const HomeScreen()),
-        GoRoute(path: '/shop', builder: (_, __) => const ShopScreen()),
-        GoRoute(path: '/emi-dues', builder: (_, __) => const EmiDuesScreen()),
-        GoRoute(path: '/limit', builder: (_, __) => const LimitScreen()),
-        GoRoute(path: '/profile', builder: (_, __) => const ProfileScreen()),
+        GoRoute(path: '/home', builder: (_, _s) => const HomeScreen()),
+        GoRoute(path: '/shop', builder: (_, _s) => const ShopScreen()),
+        GoRoute(path: '/emi-dues', builder: (_, _s) => const EmiDuesScreen()),
+        GoRoute(path: '/limit', builder: (_, _s) => const LimitScreen()),
+        GoRoute(path: '/profile', builder: (_, _s) => const ProfileScreen()),
       ],
     ),
 
@@ -33,7 +33,7 @@ final appRouter = GoRouter(
     GoRoute(
       path: '/marketplace',
       parentNavigatorKey: _rootNavigatorKey,
-      builder: (_, __) => const MarketplaceScreen(),
+      builder: (_, _s) => const MarketplaceScreen(),
     ),
     GoRoute(
       path: '/marketplace/:slug',
