@@ -1,5 +1,5 @@
-// 1Fi Marketplace — Database Schema
-// PostgreSQL via Supabase
+// 1Fi Marketplace — Prisma Schema
+// Prisma 7: connection URLs live in prisma.config.ts, not here.
 
 generator client {
   provider = "prisma-client"
@@ -7,9 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
 
 model Product {
@@ -28,8 +26,8 @@ model Product {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
-  variants    Variant[]
-  emiPlans    EmiPlan[]
+  variants Variant[]
+  emiPlans EmiPlan[]
 
   @@map("products")
 }
@@ -47,7 +45,7 @@ model Variant {
   inStock   Boolean  @default(true) @map("in_stock")
   createdAt DateTime @default(now()) @map("created_at")
 
-  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([productId])
   @@map("variants")
@@ -64,7 +62,7 @@ model EmiPlan {
   bankName      String   @default("1Fi Credit") @map("bank_name")
   createdAt     DateTime @default(now()) @map("created_at")
 
-  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@index([productId])
   @@map("emi_plans")
