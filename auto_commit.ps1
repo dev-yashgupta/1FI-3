@@ -41,7 +41,7 @@ function Invoke-Commit {
 }
 
 if ($Watch) {
-    Write-Host "[auto_commit] Watch mode ON — committing every $IntervalMinutes minute(s). Ctrl+C to stop." -ForegroundColor Magenta
+    Write-Host "[auto_commit] Watch mode ON - committing every $IntervalMinutes minute(s). Ctrl+C to stop." -ForegroundColor Magenta
     while ($true) {
         Invoke-Commit -Msg $Message
         Start-Sleep -Seconds ($IntervalMinutes * 60)
