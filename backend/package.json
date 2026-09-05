@@ -3,19 +3,19 @@
   "version": "1.0.0",
   "type": "module",
   "main": "src/server.js",
+  "description": "1Fi Marketplace Backend — REST API for products, variants, and EMI plans",
+  "keywords": ["1fi", "marketplace", "emi", "fintech"],
   "scripts": {
     "dev": "nodemon src/server.js",
     "start": "node src/server.js",
-    "db:migrate": "npx prisma migrate dev",
-    "db:push": "npx prisma db push",
+    "setup": "npm install && npm run db:generate && npm run db:push && npm run db:seed",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
     "db:seed": "node prisma/seed.js",
-    "db:studio": "npx prisma studio",
-    "db:generate": "npx prisma generate"
+    "db:studio": "prisma studio",
+    "db:reset": "prisma migrate reset --force"
   },
-  "keywords": ["1fi", "marketplace", "emi", "fintech"],
-  "author": "",
-  "license": "ISC",
-  "description": "1Fi Marketplace Backend - REST API for products, variants, and EMI plans",
   "prisma": {
     "seed": "node prisma/seed.js"
   },

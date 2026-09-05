@@ -1,4 +1,4 @@
-// 1Fi Marketplace Backend - Express Server Entry Point
+// 1Fi Marketplace Backend — Express Server Entry Point
 
 import "dotenv/config";
 import express from "express";
@@ -8,39 +8,35 @@ import { errorHandler, notFound } from "./middleware/errorHandler.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
 
-// ─── Middleware ───────────────────────────────
-app.use(
-  cors({
-    origin: [FRONTEND_URL, "http://localhost:5173", "http://localhost:4173"],
-    methods: ["GET", "POST"],
-    credentials: true,
-  })
-);
+// ─── Middleware ───────────────────────────────────────────────────────────────
+app.use(cors()); // Allow all origins (Flutter mobile, emulator, web)
 app.use(express.json());
 
-// ─── Health Check ────────────────────────────
+// ─── Health Check ─────────────────────────────────────────────────────────────
 app.get("/api/health", (_req, res) => {
   res.json({
     status: "ok",
+    service: "1Fi Marketplace API",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || "development",
+    database: "Supabase PostgreSQL",
   });
 });
 
-// ─── API Routes ──────────────────────────────
+// ─── API Routes ───────────────────────────────────────────────────────────────
 app.use("/api/products", productRoutes);
 
-// ─── Error Handling ──────────────────────────
+// ─── Error Handling ───────────────────────────────────────────────────────────
 app.use(notFound);
 app.use(errorHandler);
 
-// ─── Start Server ────────────────────────────
+// ─── Start Server ─────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
-  console.log(`🚀 1Fi Marketplace API running on http://localhost:${PORT}`);
-  console.log(`📋 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`📦 Products API: http://localhost:${PORT}/api/products`);
+  console.log(`\n🚀 1Fi Marketplace API`);
+  console.log(`   http://localhost:${PORT}`);
+  console.log(`   Health : http://localhost:${PORT}/api/health`);
+  console.log(`   Products: http://localhost:${PORT}/api/products\n`);
 });
 
 export default app;
