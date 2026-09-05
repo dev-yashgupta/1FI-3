@@ -1,0 +1,526 @@
+[
+  {
+    "id": "prod_001",
+    "name": "iPhone 17 Pro",
+    "slug": "iphone-17-pro",
+    "brand": "Apple",
+    "description": "The most advanced iPhone yet. Featuring the A19 Pro chip, a stunning ProMotion display, and a pro-grade camera system with periscope telephoto.",
+    "category": "Smartphones",
+    "imageUrl": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&q=80",
+    "mrp": 134900,
+    "basePrice": 127400,
+    "rating": 4.8,
+    "reviewCount": 2341,
+    "badges": ["No-cost EMI", "Free delivery"],
+    "variants": [
+      {
+        "id": "var_001_1",
+        "productId": "prod_001",
+        "storage": "256 GB",
+        "color": "Natural Titanium",
+        "colorHex": "#C5B9A8",
+        "finish": "Titanium",
+        "price": 127400,
+        "mrp": 134900,
+        "imageUrl": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_001_2",
+        "productId": "prod_001",
+        "storage": "256 GB",
+        "color": "Desert Titanium",
+        "colorHex": "#C8A882",
+        "finish": "Titanium",
+        "price": 127400,
+        "mrp": 134900,
+        "imageUrl": "https://images.unsplash.com/photo-1711463369546-46de27e6fcd8?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_001_3",
+        "productId": "prod_001",
+        "storage": "512 GB",
+        "color": "Black Titanium",
+        "colorHex": "#3A3A3C",
+        "finish": "Titanium",
+        "price": 145900,
+        "mrp": 154900,
+        "imageUrl": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_001_4",
+        "productId": "prod_001",
+        "storage": "1 TB",
+        "color": "White Titanium",
+        "colorHex": "#F5F5F0",
+        "finish": "Titanium",
+        "price": 164900,
+        "mrp": 174900,
+        "imageUrl": "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=600&q=80",
+        "inStock": false
+      }
+    ],
+    "emiPlans": [
+      {
+        "id": "emi_001_1",
+        "productId": "prod_001",
+        "tenureMonths": 3,
+        "monthlyAmount": 44967,
+        "interestRate": 0.0,
+        "cashback": 7500,
+        "tag": "Best Value",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_001_2",
+        "productId": "prod_001",
+        "tenureMonths": 6,
+        "monthlyAmount": 22483,
+        "interestRate": 0.0,
+        "cashback": 7500,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_001_3",
+        "productId": "prod_001",
+        "tenureMonths": 12,
+        "monthlyAmount": 11242,
+        "interestRate": 0.0,
+        "cashback": 7500,
+        "tag": "Popular",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_001_4",
+        "productId": "prod_001",
+        "tenureMonths": 24,
+        "monthlyAmount": 5621,
+        "interestRate": 0.0,
+        "cashback": 7500,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_001_5",
+        "productId": "prod_001",
+        "tenureMonths": 36,
+        "monthlyAmount": 4297,
+        "interestRate": 10.5,
+        "cashback": 7500,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      }
+    ]
+  },
+  {
+    "id": "prod_002",
+    "name": "Samsung Galaxy S25 Ultra",
+    "slug": "samsung-galaxy-s25-ultra",
+    "brand": "Samsung",
+    "description": "Engineered for those who demand the best. The Galaxy S25 Ultra features an integrated S Pen, Snapdragon 8 Elite processor, and a 200MP quad-camera system.",
+    "category": "Smartphones",
+    "imageUrl": "https://images.unsplash.com/photo-1706232941662-b91d1e5dca4d?w=600&q=80",
+    "mrp": 129999,
+    "basePrice": 119999,
+    "rating": 4.7,
+    "reviewCount": 1876,
+    "badges": ["No-cost EMI", "Exchange offer"],
+    "variants": [
+      {
+        "id": "var_002_1",
+        "productId": "prod_002",
+        "storage": "256 GB",
+        "color": "Titanium Black",
+        "colorHex": "#2C2C2E",
+        "finish": "Matte",
+        "price": 119999,
+        "mrp": 129999,
+        "imageUrl": "https://images.unsplash.com/photo-1706232941662-b91d1e5dca4d?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_002_2",
+        "productId": "prod_002",
+        "storage": "256 GB",
+        "color": "Titanium Gray",
+        "colorHex": "#8E8E93",
+        "finish": "Matte",
+        "price": 119999,
+        "mrp": 129999,
+        "imageUrl": "https://images.unsplash.com/photo-1706232941662-b91d1e5dca4d?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_002_3",
+        "productId": "prod_002",
+        "storage": "512 GB",
+        "color": "Titanium Violet",
+        "colorHex": "#7B68EE",
+        "finish": "Matte",
+        "price": 137999,
+        "mrp": 149999,
+        "imageUrl": "https://images.unsplash.com/photo-1706232941662-b91d1e5dca4d?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_002_4",
+        "productId": "prod_002",
+        "storage": "1 TB",
+        "color": "Titanium Silver Blue",
+        "colorHex": "#B0C4DE",
+        "finish": "Matte",
+        "price": 159999,
+        "mrp": 174999,
+        "imageUrl": "https://images.unsplash.com/photo-1706232941662-b91d1e5dca4d?w=600&q=80",
+        "inStock": false
+      }
+    ],
+    "emiPlans": [
+      {
+        "id": "emi_002_1",
+        "productId": "prod_002",
+        "tenureMonths": 3,
+        "monthlyAmount": 39999,
+        "interestRate": 0.0,
+        "cashback": 6000,
+        "tag": "Best Value",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_002_2",
+        "productId": "prod_002",
+        "tenureMonths": 6,
+        "monthlyAmount": 19999,
+        "interestRate": 0.0,
+        "cashback": 6000,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_002_3",
+        "productId": "prod_002",
+        "tenureMonths": 12,
+        "monthlyAmount": 9999,
+        "interestRate": 0.0,
+        "cashback": 6000,
+        "tag": "Popular",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_002_4",
+        "productId": "prod_002",
+        "tenureMonths": 24,
+        "monthlyAmount": 5416,
+        "interestRate": 0.0,
+        "cashback": 6000,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_002_5",
+        "productId": "prod_002",
+        "tenureMonths": 36,
+        "monthlyAmount": 4166,
+        "interestRate": 10.5,
+        "cashback": 6000,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      }
+    ]
+  },
+  {
+    "id": "prod_003",
+    "name": "Google Pixel 9 Pro",
+    "slug": "google-pixel-9-pro",
+    "brand": "Google",
+    "description": "Powered by Google Tensor G4 chip with advanced AI features, the best computational photography on Android, and seven years of OS updates guaranteed.",
+    "category": "Smartphones",
+    "imageUrl": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&q=80",
+    "mrp": 109999,
+    "basePrice": 99999,
+    "rating": 4.6,
+    "reviewCount": 987,
+    "badges": ["No-cost EMI"],
+    "variants": [
+      {
+        "id": "var_003_1",
+        "productId": "prod_003",
+        "storage": "128 GB",
+        "color": "Obsidian",
+        "colorHex": "#1C1C1E",
+        "finish": "Matte",
+        "price": 99999,
+        "mrp": 109999,
+        "imageUrl": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_003_2",
+        "productId": "prod_003",
+        "storage": "256 GB",
+        "color": "Porcelain",
+        "colorHex": "#F2EFE9",
+        "finish": "Matte",
+        "price": 109999,
+        "mrp": 119999,
+        "imageUrl": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_003_3",
+        "productId": "prod_003",
+        "storage": "512 GB",
+        "color": "Hazel",
+        "colorHex": "#8B956D",
+        "finish": "Matte",
+        "price": 124999,
+        "mrp": 134999,
+        "imageUrl": "https://images.unsplash.com/photo-1598327105666-5b89351aff97?w=600&q=80",
+        "inStock": true
+      }
+    ],
+    "emiPlans": [
+      {
+        "id": "emi_003_1",
+        "productId": "prod_003",
+        "tenureMonths": 3,
+        "monthlyAmount": 33333,
+        "interestRate": 0.0,
+        "cashback": 5000,
+        "tag": "Best Value",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_003_2",
+        "productId": "prod_003",
+        "tenureMonths": 6,
+        "monthlyAmount": 16666,
+        "interestRate": 0.0,
+        "cashback": 5000,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_003_3",
+        "productId": "prod_003",
+        "tenureMonths": 12,
+        "monthlyAmount": 8333,
+        "interestRate": 0.0,
+        "cashback": 5000,
+        "tag": "Popular",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_003_4",
+        "productId": "prod_003",
+        "tenureMonths": 24,
+        "monthlyAmount": 4583,
+        "interestRate": 0.0,
+        "cashback": 5000,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_003_5",
+        "productId": "prod_003",
+        "tenureMonths": 36,
+        "monthlyAmount": 3541,
+        "interestRate": 10.5,
+        "cashback": 5000,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      }
+    ]
+  },
+  {
+    "id": "prod_004",
+    "name": "Sony WH-1000XM6",
+    "slug": "sony-wh-1000xm6",
+    "brand": "Sony",
+    "description": "Industry-leading noise cancellation meets exceptional sound quality. Up to 40 hours battery, multipoint connection, and foldable design for life on the go.",
+    "category": "Audio",
+    "imageUrl": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600&q=80",
+    "mrp": 34990,
+    "basePrice": 29990,
+    "rating": 4.9,
+    "reviewCount": 5420,
+    "badges": ["No-cost EMI", "Bestseller"],
+    "variants": [
+      {
+        "id": "var_004_1",
+        "productId": "prod_004",
+        "storage": "N/A",
+        "color": "Black",
+        "colorHex": "#1C1C1E",
+        "finish": "Matte",
+        "price": 29990,
+        "mrp": 34990,
+        "imageUrl": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_004_2",
+        "productId": "prod_004",
+        "storage": "N/A",
+        "color": "Silver",
+        "colorHex": "#C0C0C0",
+        "finish": "Glossy",
+        "price": 29990,
+        "mrp": 34990,
+        "imageUrl": "https://images.unsplash.com/photo-1618366712010-f4ae9c647dcb?w=600&q=80",
+        "inStock": true
+      }
+    ],
+    "emiPlans": [
+      {
+        "id": "emi_004_1",
+        "productId": "prod_004",
+        "tenureMonths": 3,
+        "monthlyAmount": 9996,
+        "interestRate": 0.0,
+        "cashback": 1500,
+        "tag": "Best Value",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_004_2",
+        "productId": "prod_004",
+        "tenureMonths": 6,
+        "monthlyAmount": 4998,
+        "interestRate": 0.0,
+        "cashback": 1500,
+        "tag": "Popular",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_004_3",
+        "productId": "prod_004",
+        "tenureMonths": 12,
+        "monthlyAmount": 2666,
+        "interestRate": 0.0,
+        "cashback": 1500,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      }
+    ]
+  },
+  {
+    "id": "prod_005",
+    "name": "MacBook Air M4",
+    "slug": "macbook-air-m4",
+    "brand": "Apple",
+    "description": "Supercharged by M4. Incredibly thin and light with up to 18 hours of battery life, a stunning Liquid Retina display, and all-day performance with zero fan noise.",
+    "category": "Laptops",
+    "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80",
+    "mrp": 119900,
+    "basePrice": 109900,
+    "rating": 4.9,
+    "reviewCount": 3102,
+    "badges": ["No-cost EMI", "Free delivery"],
+    "variants": [
+      {
+        "id": "var_005_1",
+        "productId": "prod_005",
+        "storage": "256 GB",
+        "color": "Midnight",
+        "colorHex": "#1C1C1E",
+        "finish": "Aluminium",
+        "price": 109900,
+        "mrp": 119900,
+        "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_005_2",
+        "productId": "prod_005",
+        "storage": "512 GB",
+        "color": "Starlight",
+        "colorHex": "#F5F5DC",
+        "finish": "Aluminium",
+        "price": 129900,
+        "mrp": 139900,
+        "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_005_3",
+        "productId": "prod_005",
+        "storage": "512 GB",
+        "color": "Sky Blue",
+        "colorHex": "#87CEEB",
+        "finish": "Aluminium",
+        "price": 129900,
+        "mrp": 139900,
+        "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80",
+        "inStock": true
+      },
+      {
+        "id": "var_005_4",
+        "productId": "prod_005",
+        "storage": "1 TB",
+        "color": "Space Gray",
+        "colorHex": "#6E6E73",
+        "finish": "Aluminium",
+        "price": 149900,
+        "mrp": 164900,
+        "imageUrl": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80",
+        "inStock": false
+      }
+    ],
+    "emiPlans": [
+      {
+        "id": "emi_005_1",
+        "productId": "prod_005",
+        "tenureMonths": 3,
+        "monthlyAmount": 36633,
+        "interestRate": 0.0,
+        "cashback": 5000,
+        "tag": "Best Value",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_005_2",
+        "productId": "prod_005",
+        "tenureMonths": 6,
+        "monthlyAmount": 18316,
+        "interestRate": 0.0,
+        "cashback": 5000,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_005_3",
+        "productId": "prod_005",
+        "tenureMonths": 12,
+        "monthlyAmount": 9158,
+        "interestRate": 0.0,
+        "cashback": 5000,
+        "tag": "Popular",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_005_4",
+        "productId": "prod_005",
+        "tenureMonths": 24,
+        "monthlyAmount": 4991,
+        "interestRate": 0.0,
+        "cashback": 5000,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      },
+      {
+        "id": "emi_005_5",
+        "productId": "prod_005",
+        "tenureMonths": 36,
+        "monthlyAmount": 3841,
+        "interestRate": 10.5,
+        "cashback": 5000,
+        "tag": "",
+        "bankName": "1Fi Credit"
+      }
+    ]
+  }
+]
