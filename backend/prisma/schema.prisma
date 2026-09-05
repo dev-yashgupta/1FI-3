@@ -1,5 +1,5 @@
-// 1Fi Marketplace - Database Schema
-// PostgreSQL database with normalized tables for products, variants, and EMI plans
+// 1Fi Marketplace — Database Schema
+// PostgreSQL via Supabase
 
 generator client {
   provider = "prisma-client"
@@ -7,7 +7,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model Product {
@@ -20,6 +22,9 @@ model Product {
   mrp         Float
   price       Float
   image       String
+  rating      Float     @default(0)
+  reviewCount Int       @default(0) @map("review_count")
+  badges      String[]  @default([])
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt @map("updated_at")
 
@@ -33,10 +38,13 @@ model Variant {
   id        Int      @id @default(autoincrement())
   productId Int      @map("product_id")
   color     String?
+  colorHex  String?  @map("color_hex")
   storage   String?
   finish    String?
   price     Float
+  mrp       Float    @default(0)
   image     String?
+  inStock   Boolean  @default(true) @map("in_stock")
   createdAt DateTime @default(now()) @map("created_at")
 
   product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -52,6 +60,8 @@ model EmiPlan {
   tenureMonths  Int      @map("tenure_months")
   interestRate  Float    @map("interest_rate")
   cashback      Float    @default(0)
+  tag           String   @default("")
+  bankName      String   @default("1Fi Credit") @map("bank_name")
   createdAt     DateTime @default(now()) @map("created_at")
 
   product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
