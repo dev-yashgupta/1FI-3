@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../data/models/emi_plan.dart';
 import '../../../data/models/product.dart';
+import '../../../data/models/product_variant.dart';
 import '../../../data/repositories/product_repository.dart';
 
 // ─── Repository provider ──────────────────────────────────────────────────────
