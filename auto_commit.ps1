@@ -10,7 +10,7 @@
 
 param(
     [switch]$Watch,
-    [int]$IntervalMinutes = 5
+    [int]$IntervalMinutes = 2
 )
 
 $RepoDir = $PSScriptRoot
