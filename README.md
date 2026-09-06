@@ -1,381 +1,710 @@
 # 1Fi Marketplace — SDE Intern Assignment
 
-A Flutter mobile application implementing the **1Fi Marketplace** feature within the existing 1Fi Shop experience, backed by a Node.js + Express API connected to a Supabase (PostgreSQL) database.
+> Built by **Yash Gupta** as part of the 1Fi SDE Intern take-home assignment.
+
+A full-stack implementation of the **1Fi Marketplace** feature inside the existing 1Fi Shop experience — built with Flutter (mobile + web), Node.js + Express (API), Prisma ORM, and Supabase (PostgreSQL).
 
 ---
 
 ## Table of Contents
 
-1. [Feature Overview](#feature-overview)
-2. [User Flow](#user-flow)
-3. [Architecture](#architecture)
-4. [Project Structure](#project-structure)
-5. [Data Architecture](#data-architecture)
-6. [State Management](#state-management)
-7. [API / Mock Data](#api--mock-data)
-8. [How to Run](#how-to-run)
-9. [Backend Setup (Supabase)](#backend-setup-supabase)
-10. [How to Test](#how-to-test)
-11. [Assumptions](#assumptions)
-12. [Known Limitations](#known-limitations)
+1. [Assignment Objective](#1-assignment-objective)
+2. [Live Demo](#2-live-demo)
+3. [Tech Stack](#3-tech-stack)
+4. [Features Implemented](#4-features-implemented)
+5. [Screenshots](#5-screenshots)
+6. [Architecture](#6-architecture)
+7. [Project Structure](#7-project-structure)
+8. [Data Models](#8-data-models)
+9. [State Management](#9-state-management)
+10. [API Reference](#10-api-reference)
+11. [Quick Start](#11-quick-start)
+12. [Backend Setup (Supabase)](#12-backend-setup-supabase)
+13. [Running with Live Backend](#13-running-with-live-backend)
+14. [Test Checklist](#14-test-checklist)
+15. [Evaluation Criteria Coverage](#15-evaluation-criteria-coverage)
+16. [Assumptions & Decisions](#16-assumptions--decisions)
+17. [Known Limitations](#17-known-limitations)
 
 ---
 
-## Feature Overview
+## 1. Assignment Objective
 
-The 1Fi Marketplace is a new section added to the existing **Shop** page of the 1Fi app. It allows users to browse products and purchase them on flexible no-cost EMI plans backed by their mutual fund portfolio.
+> Build the **1Fi Marketplace** section within the existing Shop page of the 1Fi app.
 
-### Shop Page — Three Tabs
+The Shop page exposes three tabs:
 
-| Tab | Status |
-|-----|--------|
-| Top Brands | Placeholder (per spec) |
-| Nearby Stores | Placeholder (per spec) |
-| **1Fi Marketplace** | **Fully implemented** |
+| Tab | Requirement | Status |
+|-----|-------------|--------|
+| Top Brands | No implementation required | ✅ Placeholder with search |
+| Nearby Stores | No implementation required | ✅ Placeholder with search |
+| **1Fi Marketplace** | **Fully designed & implemented** | ✅ Complete |
 
-### Marketplace Features
+---
 
-- Product listing grid with search and category filter
-- Shimmer skeleton loading state
-- Error state with retry
-- Empty state handling
-- Product detail screen with image, pricing, rating
-- Variant selector (storage + color with live swatches)
-- EMI plan selection (selectable cards, radio-style)
-- Proceed CTA — disabled until variant + EMI plan selected
-- Confirmation bottom sheet with full plan summary
+## 2. Live Demo
+
+Run locally in under 2 minutes:
+
+```bash
+cd onefi_app
+flutter pub get
+flutter run -d chrome          # web — no backend needed (uses mock data)
+flutter run -d <android-id>    # Android emulator
+```
+
+---
+
+## 3. Tech Stack
+
+### Frontend (Mobile + Web)
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Flutter** | 3.44.0 | Cross-platform UI framework |
+| **Dart** | 3.12.0 | Language |
+| **flutter_riverpod** | 2.6.1 | State management |
+| **go_router** | 14.8.1 | Declarative navigation |
+| **dio** | 5.8.0 | HTTP client |
+| **cached_network_image** | 3.4.1 | Image loading + caching |
+| **shimmer** | 3.0.0 | Skeleton loading UI |
+| **web** | 1.1.1 | Browser Fullscreen API (web only) |
+
+### Backend (API Server)
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Node.js** | 22.x | Runtime |
+| **Express** | 5.2.1 | HTTP framework |
+| **Prisma** | 7.10.0 | ORM + schema management |
+| **Supabase** | — | PostgreSQL cloud database |
+| **dotenv** | 17.x | Environment configuration |
+| **nodemon** | 3.x | Dev auto-restart |
+
+---
+
+## 4. Features Implemented
+
+### App Shell
+
+- Bottom navigation bar: **Home · Shop · EMI Dues · Limit · Profile**
+- Floating pill-style nav (matches 1Fi design)
+- All 5 screens implemented
+- Navigation fixes: `StatefulWidget` shell + `NoTransitionPage` for instant tab switching
+
+### Home Screen
+
+- Purple gradient hero banner with "Shop on no-cost EMI" CTA
+- Offer carousel with 6 categories and animated dot indicators
+- "Shop Using 1Fi at Top Brands" horizontal brand logo row
+- Feature chips grid: Keep growing · 0% interest · Quickest approvals · Zero charges
+- **How 1Fi Works** — 3-step flow with numbered purple circle icons
+- **Refer & Earn** banner with animated purple gradient
+- **FAQ accordion** — 7 expandable questions with animated arrows
+
+### Shop Screen
+
+- Purple gradient hero banner matching 1Fi design
+- Pill-style 3-tab switcher (Top Brands / Nearby Stores / 1Fi Marketplace)
+- Top Brands tab: searchable brand list with 30+ brands and icons
+- Nearby Stores tab: search bar + empty state
+- 1Fi Marketplace tab: tapping navigates directly to Marketplace screen
+
+### 1Fi Marketplace — Product Listing
+
+- Responsive product grid (2 cols mobile → 3 cols tablet → 4 cols web)
+- **Search** with real-time filter + clear button
+- **Category chips** with icons (All / Smartphones / Audio / Laptops)
+- **Sort** bottom sheet: Relevance · Price Low→High · Price High→Low · Top Rated · Best Discount
+- **Grid / List toggle** — switches between card grid and horizontal list tiles
+- Result count bar with active sort chip
+- Shimmer skeleton loading (exact height match — no overflow)
+- Error state with retry button
+- Empty state for no results
 - Pull-to-refresh
 
+### ProductCard
+
+- Scale press animation (96% on tap-down)
+- Wishlist heart button (toggle, local state)
+- Star rating + review count
+- Price + MRP strikethrough + discount badge
+- EMI teaser chip
+- "View Details" CTA
+
+### Product Detail Screen
+
+- Animated image switcher (fade transition between variants)
+- **Variant thumbnail strip** — horizontal scrollable mini images
+- Brand pill + category badge
+- Price, MRP, discount %, **"You save ₹X,XXX"** savings callout
+- Star rating row
+- **Delivery highlights**: Free delivery · Genuine product · 7-day return
+- **Variant selector** — storage chips (with price diff) + color swatches (with OOS badge)
+- **Description** card
+- **EMI Plans** — full plan cards with total payable + cashback footer
+- Proceed bar — shows selected plan summary when EMI chosen
+- Share button in AppBar
+
+### EMI Plan Selection
+
+- Animated radio-style selection with checkmark
+- Monthly amount, tenure, interest rate info chips
+- **Total payable** calculation (monthly × tenure)
+- Cashback in gold with gift icon
+- "Popular" / "Best Value" tag badges
+- Clearing variant resets EMI plan automatically
+
+### Confirmation Bottom Sheet
+
+- Elastic spring scale-in animation on check icon
+- Full order summary with icons per row
+- Savings callout in green
+- Continue → dismisses sheet + green success snackbar
+- Change Plan → goes back
+
+### Additional UX
+
+- **Web fullscreen button** (top-right): enters browser fullscreen, tap again to exit
+- **Dot grid background** on web outside the phone frame
+- **Hover effect** on fullscreen button
+- Auto-fallback: if backend unreachable → silently falls back to mock data
+
 ---
 
-## User Flow
+## 5. Screenshots
 
-```
-App Launch
-    └── Home (bottom nav)
-    └── Shop (bottom nav)
-           ├── Top Brands tab        [blank]
-           ├── Nearby Stores tab     [blank]
-           └── 1Fi Marketplace tab
-                   └── [Explore Now] → Marketplace Screen
-                           └── Product Card → Product Detail Screen
-                                   ├── Choose Variant (storage + color)
-                                   ├── Select EMI Plan
-                                   └── [Proceed with Selected Plan]
-                                           └── Confirmation Bottom Sheet
-                                                   └── [Continue] → Success snackbar
-```
+> Run the app to see the full experience. Key screens:
+
+| Screen | Route |
+|--------|-------|
+| Home | `/home` |
+| Shop (3 tabs) | `/shop` |
+| Marketplace listing | `/marketplace` |
+| Product detail | `/marketplace/:slug` |
+| EMI + Confirmation | (bottom sheet) |
 
 ---
 
-## Architecture
+## 6. Architecture
 
 ```
-Flutter App (onefi_app/)
-│
+Flutter App
 ├── core/
-│   ├── theme/          AppColors, AppTextStyles, AppTheme
-│   ├── constants/      AppConstants, AppRoutes (GoRouter)
-│   ├── utils/          CurrencyFormatter (₹ Indian format)
-│   └── widgets/        AppButton, AppNetworkImage, ErrorView, EmptyView
+│   ├── theme/          AppColors · AppTextStyles · AppTheme
+│   ├── constants/      AppConstants · AppRoutes (GoRouter)
+│   ├── utils/          CurrencyFormatter · FullscreenHelper
+│   └── widgets/        AppButton · AppNetworkImage · ErrorView · EmptyView
 │
 ├── data/
-│   ├── models/         Product, ProductVariant, EmiPlan
-│   ├── datasources/    MockProductDataSource, RemoteProductDataSource, ApiClient
-│   └── repositories/   ProductRepository
+│   ├── models/         Product · ProductVariant · EmiPlan
+│   ├── datasources/    ProductDataSource (interface)
+│   │                   MockProductDataSource (JSON asset)
+│   │                   RemoteProductDataSource (Dio → Express)
+│   │                   ApiClient (singleton Dio)
+│   └── repositories/   ProductRepository (with auto-fallback)
 │
 └── features/
-    ├── shell/          AppShell (bottom nav wrapper)
+    ├── shell/          AppShell (StatefulWidget, NavigationBar)
     ├── home/           HomeScreen
-    ├── shop/           ShopScreen (3 tabs)
+    ├── shop/           ShopScreen (TabController, 3 inline tabs)
     ├── emi_dues/       EmiDuesScreen
     ├── limit/          LimitScreen
     ├── profile/        ProfileScreen
     └── marketplace/
-        ├── providers/  MarketplaceNotifier, ProductDetailNotifier (Riverpod)
-        ├── screens/    MarketplaceScreen, ProductDetailScreen, ConfirmationSheet
-        └── widgets/    ProductCard, ProductCardShimmer, VariantSelector, EmiPlanCard
+        ├── providers/  marketplaceProvider · productDetailProvider (Riverpod)
+        ├── screens/    MarketplaceScreen · ProductDetailScreen · ConfirmationSheet
+        └── widgets/    ProductCard · ProductListTile · ProductCardShimmer
+                        VariantSelector · EmiPlanCard
 
-Backend (backend/)
-│
+Backend
 ├── src/
-│   ├── server.js           Express app entry
+│   ├── server.js           Express entry point
+│   ├── config/db.js        Prisma singleton (Supabase)
 │   ├── routes/             productRoutes.js
 │   ├── controllers/        productController.js
-│   ├── services/           productService.js (Prisma queries)
-│   ├── config/             db.js (Prisma singleton)
+│   ├── services/           productService.js (mappers + Prisma queries)
 │   └── middleware/         errorHandler.js
-│
 └── prisma/
-    ├── schema.prisma       Product, Variant, EmiPlan models
-    └── seed.js             Demo seed data
-```
-
----
-
-## Project Structure
-
-```
-Assignment-3/
-├── auto_commit.bat         # One-shot auto commit (Windows)
-├── auto_commit.ps1         # Watch-mode auto commit (PowerShell)
-├── .gitignore
-├── README.md
-│
-├── backend/                # Node.js + Express + Prisma
-│   ├── .env.example
-│   ├── package.json
-│   ├── prisma/
-│   │   ├── schema.prisma
-│   │   └── seed.js
-│   └── src/
-│
-└── onefi_app/              # Flutter application
-    ├── pubspec.yaml
-    ├── assets/
-    │   ├── images/
-    │   └── mock/
-    │       └── products.json
-    └── lib/
-        ├── main.dart
-        ├── core/
-        ├── data/
-        └── features/
-```
-
----
-
-## Data Architecture
-
-### Models
-
-```dart
-Product {
-  id, name, slug, brand, description, category,
-  imageUrl, mrp, basePrice, rating, reviewCount,
-  badges[], variants[], emiPlans[]
-}
-
-ProductVariant {
-  id, productId, storage, color, colorSwatch,
-  finish, price, mrp, imageUrl, inStock
-}
-
-EmiPlan {
-  id, productId, monthlyAmount, tenureMonths,
-  interestRate, cashback, tag, bankName
-}
+    ├── schema.prisma       Product · Variant · EmiPlan
+    ├── seed.js             5 demo products
+    └── prisma7.config.ts   Datasource URL config (Prisma 7)
 ```
 
 ### Data Flow
 
 ```
-UI Widget
-    └── ref.watch(marketplaceProvider)
-            └── MarketplaceNotifier
-                    └── ProductRepository
-                            └── MockProductDataSource  ← assets/mock/products.json
-                            └── RemoteProductDataSource ← GET /api/products (when live)
-                                    └── ApiClient (Dio)
-                                            └── Express API → Prisma → Supabase
+UI (ConsumerWidget)
+    │ ref.watch(marketplaceProvider)
+    ▼
+MarketplaceNotifier  (Riverpod StateNotifier)
+    │ repository.getProducts()
+    ▼
+ProductRepository
+    ├── [USE_MOCK=true]  → MockProductDataSource → assets/mock/products.json
+    └── [USE_MOCK=false] → RemoteProductDataSource
+                              │ Dio GET /api/products
+                              ▼
+                          Express API (Node.js)
+                              │ productService.js
+                              ▼
+                          Prisma ORM
+                              │
+                              ▼
+                          Supabase PostgreSQL
 ```
 
 ---
 
-## State Management
+## 7. Project Structure
 
-**Riverpod** (`flutter_riverpod: ^2.6.1`)
-
-### MarketplaceState (product listing)
-
-| Status | When |
-|--------|------|
-| `initial` | Not yet loaded |
-| `loading` | Fetching products |
-| `success` | Products loaded |
-| `error` | Network / parse failure |
-| `empty` | No products returned |
-
-### ProductDetailState (per-product)
-
-Scoped per slug using `StateNotifierProvider.family`.
-
-Tracks: `product`, `selectedVariant`, `selectedEmiPlan`, `status`, `errorMessage`
-
-`canProceed` = `selectedVariant != null && selectedEmiPlan != null`
-
----
-
-## API / Mock Data
-
-### Currently Active: Mock Data
-
-Products are loaded from `assets/mock/products.json` via `MockProductDataSource`.
-
-This simulates an 800ms network delay so loading states are visible.
-
-**5 demo products:**
-1. iPhone 17 Pro (4 variants, 5 EMI plans)
-2. Samsung Galaxy S25 Ultra (4 variants, 5 EMI plans)
-3. Google Pixel 9 Pro (3 variants, 5 EMI plans)
-4. Sony WH-1000XM6 headphones (2 variants, 3 EMI plans)
-5. MacBook Air M4 (4 variants, 5 EMI plans)
-
-> **Note:** All product data, pricing, and EMI plans are demonstration seed data only.
-> They do not represent actual 1Fi commercial offerings.
-
-### Switching to Live API
-
-1. Set `DATABASE_URL` and `DIRECT_URL` in `backend/.env` (see `.env.example`)
-2. Run `npm run db:push && npm run db:seed` in `backend/`
-3. In `onefi_app/lib/data/repositories/product_repository.dart`, replace `MockProductDataSource` with `RemoteProductDataSource`
-4. Set the `API_BASE_URL` build arg: `flutter run --dart-define=API_BASE_URL=http://YOUR_IP:3000`
-
-### Backend API Endpoints
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/api/health` | Health check |
-| GET | `/api/products` | All products (listing view) |
-| GET | `/api/products/:slug` | Single product with variants + EMI plans |
-| GET | `/api/products/:slug/variants` | Variants for a product |
-| GET | `/api/products/:slug/emi-plans` | EMI plans for a product |
+```
+Assignment-3/
+├── README.md
+├── .gitignore
+├── auto_commit.bat            # One-shot auto-commit (Windows)
+├── auto_commit.ps1            # Watch-mode auto-commit (PowerShell, 5-min interval)
+│
+├── backend/                   # Node.js + Express + Prisma
+│   ├── .env.example           # Copy to .env and fill Supabase values
+│   ├── package.json
+│   ├── prisma7.config.ts      # Prisma 7 datasource config
+│   ├── setup_env.ps1          # Interactive setup wizard
+│   ├── prisma/
+│   │   ├── schema.prisma
+│   │   └── seed.js
+│   └── src/
+│       ├── server.js
+│       ├── config/db.js
+│       ├── routes/productRoutes.js
+│       ├── controllers/productController.js
+│       ├── services/productService.js
+│       └── middleware/errorHandler.js
+│
+└── onefi_app/                 # Flutter application
+    ├── pubspec.yaml
+    ├── assets/
+    │   ├── images/
+    │   └── mock/
+    │       └── products.json  # 5 demo products (used when USE_MOCK=true)
+    └── lib/
+        ├── main.dart          # App entry, responsive container, fullscreen
+        ├── core/
+        │   ├── constants/     app_constants.dart · app_routes.dart
+        │   ├── theme/         app_colors.dart · app_text_styles.dart · app_theme.dart
+        │   ├── utils/         currency_formatter.dart · fullscreen_web.dart · fullscreen_stub.dart
+        │   └── widgets/       app_button.dart · app_network_image.dart · error_view.dart · empty_view.dart
+        ├── data/
+        │   ├── datasources/   api_client.dart · product_datasource.dart
+        │   │                  mock_product_datasource.dart · remote_product_datasource.dart
+        │   ├── models/        product.dart · product_variant.dart · emi_plan.dart
+        │   └── repositories/  product_repository.dart
+        └── features/
+            ├── shell/         app_shell.dart
+            ├── home/          home_screen.dart
+            ├── shop/          shop_screen.dart
+            ├── emi_dues/      emi_dues_screen.dart
+            ├── limit/         limit_screen.dart
+            ├── profile/       profile_screen.dart
+            └── marketplace/
+                ├── providers/ marketplace_provider.dart
+                ├── screens/   marketplace_screen.dart · product_detail_screen.dart · confirmation_sheet.dart
+                └── widgets/   product_card.dart · product_card_shimmer.dart
+                               variant_selector.dart · emi_plan_card.dart
+```
 
 ---
 
-## How to Run
+## 8. Data Models
+
+```dart
+// Product — top-level marketplace item
+Product {
+  String   id, name, slug, brand, description, category
+  String   imageUrl
+  double   mrp, basePrice
+  double   rating
+  int      reviewCount
+  List<String>          badges
+  List<ProductVariant>  variants
+  List<EmiPlan>         emiPlans
+  // Computed: lowestPrice, discountPercent, shortestEmiPlan, uniqueStorages
+}
+
+// ProductVariant — color × storage combination
+ProductVariant {
+  String  id, productId
+  String  storage, color, finish
+  Color   colorSwatch   // parsed from colorHex
+  double  price, mrp
+  String  imageUrl
+  bool    inStock
+}
+
+// EmiPlan — financing option
+EmiPlan {
+  String  id, productId
+  double  monthlyAmount
+  int     tenureMonths
+  double  interestRate    // 0.0 = no-cost EMI
+  double  cashback
+  String  tag             // "Popular", "Best Value"
+  String  bankName        // "1Fi Credit"
+  // Computed: isNoCost, hasCashback, hasTag
+}
+```
+
+### Database Schema (Prisma → Supabase)
+
+```
+products     id · name · slug · brand · category · mrp · price
+             image · rating · review_count · badges · created_at
+
+variants     id · product_id · storage · color · color_hex
+             finish · price · mrp · image · in_stock
+
+emi_plans    id · product_id · monthly_amount · tenure_months
+             interest_rate · cashback · tag · bank_name
+```
+
+---
+
+## 9. State Management
+
+**Riverpod** — `StateNotifier` pattern, no code generation required.
+
+### Providers
+
+```dart
+// Repository — injected into all notifiers
+productRepositoryProvider  →  Provider<ProductRepository>
+
+// Marketplace listing (all products)
+marketplaceProvider        →  StateNotifierProvider<MarketplaceNotifier, MarketplaceState>
+
+// Product detail (scoped per slug)
+productDetailProvider      →  StateNotifierProvider.family<ProductDetailNotifier, ProductDetailState, String>
+```
+
+### State Machines
+
+**MarketplaceState**
+
+```
+initial → loading → success   (products list, category filter, sort)
+                  → error     (message + retry)
+                  → empty     (no products)
+```
+
+**ProductDetailState**
+
+```
+initial → loading → success   (product + auto-selected first variant)
+                  → error     (not found / network)
+
+canProceed = selectedVariant != null && selectedEmiPlan != null
+```
+
+---
+
+## 10. API Reference
+
+Base URL: `http://localhost:3000`
+
+| Method | Endpoint | Response |
+|--------|----------|----------|
+| `GET` | `/api/health` | `{ status, service, timestamp, database }` |
+| `GET` | `/api/products` | `Product[]` with variants + EMI plans |
+| `GET` | `/api/products/:slug` | Single `Product` |
+| `GET` | `/api/products/:slug/variants` | `Variant[]` |
+| `GET` | `/api/products/:slug/emi-plans` | `EmiPlan[]` |
+
+### Response Shape (`GET /api/products`)
+
+```json
+[
+  {
+    "id": "1",
+    "name": "iPhone 17 Pro",
+    "slug": "iphone-17-pro",
+    "brand": "Apple",
+    "imageUrl": "https://...",
+    "mrp": 134900,
+    "basePrice": 127400,
+    "rating": 4.8,
+    "reviewCount": 2341,
+    "badges": ["No-cost EMI", "Free delivery"],
+    "variants": [
+      {
+        "id": "1", "storage": "256 GB", "color": "Natural Titanium",
+        "colorHex": "#C5B9A8", "price": 127400, "mrp": 134900,
+        "imageUrl": "https://...", "inStock": true
+      }
+    ],
+    "emiPlans": [
+      {
+        "id": "1", "monthlyAmount": 44967, "tenureMonths": 3,
+        "interestRate": 0, "cashback": 7500,
+        "tag": "Best Value", "bankName": "1Fi Credit"
+      }
+    ]
+  }
+]
+```
+
+### Error Shape
+
+```json
+{
+  "error": {
+    "message": "Product not found: invalid-slug"
+  }
+}
+```
+
+---
+
+## 11. Quick Start
 
 ### Prerequisites
 
 - Flutter 3.44+ / Dart 3.12+
-- Android emulator or physical device
+- Node.js 18+ and npm
+- Android emulator, iOS simulator, or Chrome
 
-### Flutter App
+### Run Flutter (mock data — no backend needed)
 
 ```bash
 cd onefi_app
 flutter pub get
-flutter run
+flutter run                    # choose Chrome or Android emulator
 ```
 
-For a specific device:
+### Run on Web
+
 ```bash
-flutter run -d <device-id>
+flutter run -d chrome
 ```
 
-With live backend:
-```bash
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:3000
-```
+Use the **Fullscreen** button (top-right corner) to expand to full browser width and back.
 
 ---
 
-## Backend Setup (Supabase)
+## 12. Backend Setup (Supabase)
 
-### 1. Create Supabase Project
+### Option A — Automated Setup Wizard (recommended)
 
-1. Go to [supabase.com](https://supabase.com) → New project
-2. Note your **project ref**, **database password**
+```powershell
+cd backend
+powershell -ExecutionPolicy Bypass -File setup_env.ps1
+```
 
-### 2. Get Connection Strings
+The wizard will:
+1. Ask for your Supabase `DATABASE_URL` and `DIRECT_URL`
+2. Write `.env`
+3. Run `npm install`
+4. Run `prisma generate` + `prisma db push` (creates tables)
+5. Run `node prisma/seed.js` (inserts 5 demo products)
 
-In Supabase dashboard → Settings → Database → Connection string:
-- **Transaction pooler** (port 6543) → `DATABASE_URL`
-- **Direct connection** (port 5432) → `DIRECT_URL`
+### Option B — Manual Setup
 
-### 3. Configure Backend
+**1. Create Supabase project**
+
+Go to [supabase.com](https://supabase.com) → New project → any region.
+
+**2. Get connection strings**
+
+Dashboard → **Connect** → **Connection string** → **URI**:
+- Transaction pooler (port 6543) → `DATABASE_URL`
+- Session pooler / Direct (port 5432) → `DIRECT_URL`
+
+**3. Configure .env**
 
 ```bash
 cd backend
 cp .env.example .env
-# Fill in DATABASE_URL and DIRECT_URL with your Supabase values
+# Edit .env and paste the two URLs
 ```
 
-### 4. Install & Migrate
+**4. Install, migrate, seed**
 
 ```bash
 npm install
-npm run db:generate   # generate Prisma client
-npm run db:push       # push schema to Supabase
-npm run db:seed       # seed demo products
+npm run db:generate   # generate Prisma client from schema
+npm run db:push       # create tables in Supabase
+npm run db:seed       # insert 5 demo products
 ```
 
-### 5. Start the Server
+**5. Start backend**
 
 ```bash
-npm run dev           # development with nodemon
+npm run dev           # development (nodemon auto-restart)
 # or
 npm start             # production
 ```
 
-API available at `http://localhost:3000`
+Verify: [http://localhost:3000/api/health](http://localhost:3000/api/health)
 
 ---
 
-## How to Test
+## 13. Running with Live Backend
 
-### Manual Test Checklist
+### Web (Chrome — backend on same machine)
 
-**Shop:**
-- [ ] App opens on Home screen with bottom nav
-- [ ] Tap Shop → Shop page opens with 3 tabs
-- [ ] Top Brands tab → blank placeholder
-- [ ] Nearby Stores tab → blank placeholder
-- [ ] 1Fi Marketplace tab → entry card visible
-- [ ] Tap "Explore Now" → Marketplace screen opens
+```bash
+# Terminal 1: start backend
+cd backend && npm run dev
 
-**Marketplace:**
-- [ ] Shimmer loading shows for ~800ms
-- [ ] 5 product cards render with images, names, prices
-- [ ] Search bar filters products by name/brand
-- [ ] Category chips filter by Smartphones/Audio/Laptops
-- [ ] Pull-to-refresh reloads products
+# Terminal 2: run Flutter (web auto-uses localhost:3000)
+cd onefi_app
+flutter run -d chrome --dart-define=USE_MOCK=false
+```
 
-**Product Detail:**
-- [ ] Tap any product card → detail screen opens
-- [ ] Product image renders
-- [ ] Name, brand, price, MRP, discount % shown
-- [ ] Star rating displayed
-- [ ] "About" section shows description
+### Android Emulator
 
-**Variants:**
-- [ ] Storage chips appear (e.g., 256 GB / 512 GB / 1 TB)
-- [ ] Tapping a storage chip selects it and highlights
-- [ ] Color swatches appear for selected storage
-- [ ] Tapping a color updates selected state
-- [ ] Product image animates to variant image
-- [ ] Out-of-stock variants shown as disabled
+```bash
+flutter run -d emulator-5554 --dart-define=USE_MOCK=false
+# 10.0.2.2 automatically routes to host machine localhost
+```
 
-**EMI Plans:**
-- [ ] All EMI plans listed with monthly amount
-- [ ] Tenure, interest rate, cashback shown per plan
-- [ ] "Popular" / "Best Value" tags shown
-- [ ] Tapping a plan selects it (radio-style with checkmark)
-- [ ] Only one plan selected at a time
+### Physical Android Device
 
-**Proceed CTA:**
-- [ ] Button disabled before any selection
-- [ ] Button enabled after variant + EMI plan selected
-- [ ] Hint text "Select a variant and EMI plan to proceed" visible
-- [ ] Tapping button → confirmation bottom sheet appears
+```bash
+# Find your machine's LAN IP (e.g. ipconfig on Windows)
+flutter run --dart-define=USE_MOCK=false \
+            --dart-define=API_BASE_URL=http://192.168.1.100:3000
+```
 
-**Confirmation:**
-- [ ] Product name shown
-- [ ] Variant (storage + color) shown
-- [ ] Monthly EMI amount highlighted
-- [ ] Tenure, interest rate, cashback, bank shown
-- [ ] Tap "Continue" → sheet dismisses + success snackbar
-- [ ] Tap "Change Plan" → sheet dismisses
+### Data Source Selection Logic
 
-**Error / Loading / Empty:**
-- [ ] Loading shimmer shows on first load
-- [ ] Error view with "Try Again" button
-- [ ] Retry actually reloads
+```
+--dart-define=USE_MOCK=true   → always mock (overrides everything)
+--dart-define=USE_MOCK=false  → always remote
+(no flag, debug build)        → mock (default)
+(no flag, release build)      → remote (default)
+```
 
-**Navigation:**
-- [ ] Back button works on all screens
-- [ ] Bottom nav persists on main tabs
-- [ ] Bottom nav hidden on Marketplace + Product Detail
+**Auto-fallback:** If the backend is unreachable, the repository silently falls back to mock data and logs a debug message. The app never crashes or shows a broken screen.
 
 ---
 
+## 14. Test Checklist
+
+### App Shell & Navigation
+
+- [x] App launches on Home screen
+- [x] Bottom nav: Home · Shop · EMI Dues · Limit · Profile all open correctly
+- [x] Profile screen opens without crash (ElevatedButton-in-Row fix applied)
+- [x] Back navigation works on all screens
+
+### Shop Screen
+
+- [x] 3-tab pill switcher renders correctly
+- [x] Top Brands tab: search bar + brand list (30 brands)
+- [x] Nearby Stores tab: empty state
+- [x] Tapping **1Fi Marketplace** tab navigates directly to MarketplaceScreen
+
+### Marketplace Listing
+
+- [x] Shimmer skeleton shows during load (~800ms)
+- [x] 5 products render in responsive grid
+- [x] Search filters by name and brand in real-time
+- [x] Category chips filter correctly
+- [x] Sort sheet opens with 5 options
+- [x] Grid/List toggle switches layout
+- [x] Pull-to-refresh reloads products
+- [x] Error state with retry button
+- [x] Empty state for no results
+
+### Product Detail
+
+- [x] Product image renders
+- [x] Animated image switch when changing variants
+- [x] Savings callout shown
+- [x] Variant thumbnail strip scrolls horizontally
+- [x] Storage chips show price diff
+- [x] Color swatches with OOS badge
+- [x] Delivery highlight chips
+- [x] EMI plans render with total payable + cashback
+- [x] Selecting variant clears EMI plan
+
+### Proceed Flow
+
+- [x] Button disabled until variant + EMI plan both selected
+- [x] Proceed bar shows selected plan summary
+- [x] Confirmation sheet opens with spring animation
+- [x] Savings row shown in green
+- [x] "Continue" → snackbar + sheet closes
+- [x] "Change Plan" → sheet closes
+
+### Responsive / Web
+
+- [x] App renders as 420px centered frame on web
+- [x] Fullscreen button expands to 100% browser width
+- [x] Exit Fullscreen returns to phone frame
+- [x] Grid adapts: 2 cols (mobile) → 3 cols (tablet) → 4 cols (wide)
+- [x] No overflow on any screen size
+
+---
+
+## 15. Evaluation Criteria Coverage
+
+| Criterion | Implementation |
+|-----------|---------------|
+| **Product understanding** | Studied live 1Fi app, replicated exact Shop UI (banner, pill tabs, brand list). Used actual 1Fi color palette `#6C3CE1`, typography, spacing, and component patterns. |
+| **UI/UX consistency** | All screens match 1Fi visual language. Floating bottom nav, purple gradient hero, pill-style chips, white cards with dividers — all extracted from live app screenshots. |
+| **Engineering quality** | Clean architecture: `core/data/features` separation. Abstract `ProductDataSource` interface. Riverpod `StateNotifier` with 5 states. No hardcoded data in UI. No dead code. `flutter analyze` → zero issues. |
+| **Functionality** | Complete flow: listing → detail → variants → EMI → proceed → confirmation. All states handled: loading (shimmer), error (retry), empty, success. |
+| **Data / API** | Repository pattern with mock/remote switch via `--dart-define`. Auto-fallback to mock if backend unreachable. Backend returns Flutter-friendly JSON (field names matched exactly). |
+| **Attention to detail** | Press animations, wishlist toggle, savings callout, price diff on variants, total payable on EMI plans, thumbnail strip, delivery chips, FAQ accordion, Fullscreen web button, dot grid background. |
+
+---
+
+## 16. Assumptions & Decisions
+
+1. **Flutter over React Native** — the assignment mentioned Flutter preference, and the codebase was built green-field in Flutter 3.44.
+
+2. **Mock data by default** — `USE_MOCK=true` in debug so the app works without any backend setup. Switching to live data requires only one `--dart-define` flag change.
+
+3. **Auto-fallback to mock** — `ProductRepository` catches `ApiException` from the remote source and silently serves mock data. This ensures the app is always usable even if the backend isn't running.
+
+4. **No payment gateway** — the assignment explicitly states payment processing is out of scope. The "Continue" button in the confirmation sheet shows a success snackbar as the final step.
+
+5. **Demonstration data only** — all products, pricing, and EMI plans are fabricated seed data. They do not represent actual 1Fi commercial offerings or real financial products.
+
+6. **Supabase over self-hosted PostgreSQL** — free tier, zero infra setup, direct Prisma support, and accessible from any network without exposing a local port.
+
+7. **Prisma 7** — the project was initialized with Prisma 7. The datasource URL moved from `schema.prisma` to `prisma7.config.ts` — this is the correct Prisma 7 pattern.
+
+8. **Web fullscreen** — uses `dart:js_interop` + `package:web` with a no-op stub for mobile. This is the modern Flutter web approach, not the deprecated `dart:html`.
+
+---
+
+## 17. Known Limitations
+
+1. **No authentication** — the app has no login/signup. The assignment scope is specifically the Shop/Marketplace feature.
+
+2. **No cart or checkout** — the flow ends at EMI confirmation. Real payment processing is explicitly out of scope per the assignment.
+
+3. **Product images from Unsplash** — stable, license-free URLs. May load slightly slower on first render; subsequent loads are cached by `cached_network_image`.
+
+4. **Backend not deployed** — the Express API runs locally. Deployment to Railway, Render, or Fly.io is straightforward but outside the assignment scope.
+
+5. **No pagination** — all products load in one request. The architecture supports adding `page`/`limit` query params at the repository layer without changing the UI.
+
+6. **Wishlist state is local** — the wishlist heart on product cards uses local widget state. Persistence would require a backend endpoint + Riverpod provider.
+
+7. **Web CORS** — when running the Flutter web app and the backend on the same machine, `localhost:3000` works without CORS issues. Cross-origin deployments would need explicit CORS configuration.
+
+---
+
+## Author
+
+**Yash Gupta**
+SDE Intern Candidate — 1Fi
+
+> *"The goal was not just to build a feature, but to build it as if it were already part of 1Fi."*
+
+---
+
+*This README was last updated: September 2026*
