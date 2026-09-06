@@ -242,14 +242,14 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
-                          color: AppColors.emiBadge.withValues(alpha: 0.12),
+                          color: AppColors.emiGreen.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(
                               AppConstants.radiusPill),
                         ),
                         child: const Text(
                           'No-cost available',
                           style: TextStyle(
-                            color: AppColors.emiBadge,
+                            color: AppColors.emiGreen,
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                           ),
