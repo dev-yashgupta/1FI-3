@@ -379,21 +379,3 @@ API available at `http://localhost:3000`
 
 ---
 
-## Assumptions
-
-1. **No real payment processing** — the assignment does not require it. "Continue" in confirmation sheet shows a success snackbar.
-2. **Mock data used by default** — the repository uses `MockProductDataSource` with a simulated 800ms delay. The live backend is ready to connect with a `.env` change.
-3. **Images from Unsplash** — stable, license-free image URLs used for demo products.
-4. **EMI plans are demonstration data** — not actual 1Fi financial products.
-5. **Portrait-only** — locked to portrait per typical mobile finance app conventions.
-6. **Supabase region** — `.env.example` uses `ap-south-1` (Mumbai). Update your actual Supabase region URL.
-
----
-
-## Known Limitations
-
-1. **No authentication** — the app has no login screen; the assignment scope is Shop/Marketplace only.
-2. **Mock images may load slowly** on first render (Unsplash CDN). Subsequent loads are cached by `cached_network_image`.
-3. **Backend not deployed** — the Express API runs locally. Deployment to Railway / Render / Fly.io is straightforward but outside assignment scope.
-4. **No pagination** — all products load in one request. The architecture supports adding `page`/`limit` params to the repository without UI changes.
-5. **No cart** — the assignment flow ends at EMI plan confirmation, not a real checkout.
