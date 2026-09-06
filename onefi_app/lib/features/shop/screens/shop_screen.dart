@@ -15,7 +15,32 @@ class _ShopScreenState extends State<ShopScreen>
       TabController(length: 3, vsync: this);
 
   @override
-  void dispose() { _tc.dispose(); super.dispose(); }
+  void initState() {
+    super.initState();
+    // When user taps "1Fi Marketplace" tab (index 2), navigate directly
+    _tc.addListener(_onTabChanged);
+  }
+
+  void _onTabChanged() {
+    // Only trigger on actual tap (not animation frames)
+    if (_tc.indexIsChanging && _tc.index == 2) {
+      // Reset back to previous tab before navigating so the tab bar
+      // doesn't show "1Fi Marketplace" as selected when user comes back
+      Future.microtask(() {
+        if (mounted) {
+          _tc.animateTo(_tc.previousIndex);
+          context.push('/marketplace');
+        }
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _tc.removeListener(_onTabChanged);
+    _tc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
