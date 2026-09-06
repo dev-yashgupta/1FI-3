@@ -61,7 +61,36 @@ class AppTheme {
         ),
       ),
 
-      // ── BottomNavigationBar ────────────────────────
+      // ── NavigationBar (M3 — used by AppShell) ─────
+      navigationBarTheme: NavigationBarThemeData(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        indicatorColor: AppColors.primary.withValues(alpha: 0.10),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              color: AppColors.navSelected,
+              fontFamily: 'Roboto',
+            );
+          }
+          return const TextStyle(
+            fontSize: 11,
+            fontWeight: FontWeight.w400,
+            color: AppColors.navUnselected,
+            fontFamily: 'Roboto',
+          );
+        }),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return const IconThemeData(color: AppColors.navSelected, size: 22);
+          }
+          return const IconThemeData(color: AppColors.navUnselected, size: 22);
+        }),
+      ),
+
+      // ── BottomNavigationBar (legacy fallback) ──────
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.navBackground,
         selectedItemColor: AppColors.navSelected,
