@@ -1,0 +1,58 @@
+name: Build & Deploy Flutter Web → GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:          # allow manual trigger from GitHub UI
+
+permissions:
+  contents: write             # needed to push to gh-pages branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout code ────────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2. Setup Flutter ────────────────────────────────────────────────
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.44.0'
+          channel: 'stable'
+          cache: true           # cache Flutter SDK between runs
+
+      # ── 3. Install dependencies ─────────────────────────────────────────
+      - name: Install Flutter dependencies
+        working-directory: onefi_app
+        run: flutter pub get
+
+      # ── 4. Verify Flutter web is enabled ────────────────────────────────
+      - name: Enable Flutter web
+        run: flutter config --enable-web
+
+      # ── 5. Build Flutter web ────────────────────────────────────────────
+      #
+      # base-href MUST match your GitHub Pages path:
+      #   https://dev-yashgupta.github.io/1FI-3/
+      #                                    ↑ repo name
+      - name: Build Flutter web (release)
+        working-directory: onefi_app
+        run: |
+          flutter build web \
+            --release \
+            --base-href "/1FI-3/" \
+            --no-tree-shake-icons
+
+      # ── 6. Deploy to gh-pages branch ────────────────────────────────────
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: onefi_app/build/web
+          publish_branch: gh-pages
+          force_orphan: true          # keep gh-pages branch clean
+          commit_message: 'deploy: Flutter web build ${{ github.sha }}'
