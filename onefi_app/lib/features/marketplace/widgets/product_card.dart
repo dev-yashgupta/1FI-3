@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/constants/app_constants.dart';
 import '../../../core/utils/currency_formatter.dart';
 import '../../../core/widgets/app_network_image.dart';
 import '../../../data/models/product.dart';

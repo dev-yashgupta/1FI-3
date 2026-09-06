@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/constants/app_constants.dart';
 
-/// Shimmer skeleton shown while products are loading.
+/// Shimmer skeleton — uses flexible layout, no fixed heights that overflow.
 class ProductCardShimmer extends StatelessWidget {
   const ProductCardShimmer({super.key});
 
@@ -15,37 +14,43 @@ class ProductCardShimmer extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(AppConstants.radiusLG),
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(color: AppColors.divider),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // image placeholder
-            Container(
-              height: 160,
-              decoration: BoxDecoration(
-                color: AppColors.shimmerBase,
-                borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(AppConstants.radiusLG)),
+            // Image placeholder — uses AspectRatio like the real card
+            AspectRatio(
+              aspectRatio: 1.1,
+              child: Container(
+                decoration: const BoxDecoration(
+                  color: AppColors.shimmerBase,
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(14)),
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  _Box(width: 60, height: 10),
-                  const SizedBox(height: 8),
-                  _Box(width: double.infinity, height: 16),
-                  const SizedBox(height: 4),
-                  _Box(width: 140, height: 16),
-                  const SizedBox(height: 12),
-                  _Box(width: 100, height: 14),
+                  _Box(width: 50, height: 9),
                   const SizedBox(height: 6),
-                  _Box(width: 160, height: 12),
-                  const SizedBox(height: 16),
-                  _Box(width: double.infinity, height: 38),
+                  _Box(width: double.infinity, height: 13),
+                  const SizedBox(height: 3),
+                  _Box(width: 110, height: 13),
+                  const SizedBox(height: 8),
+                  _Box(width: 90, height: 13),
+                  const SizedBox(height: 3),
+                  _Box(width: 70, height: 11),
+                  const SizedBox(height: 6),
+                  _Box(width: 120, height: 11),
+                  const SizedBox(height: 10),
+                  _Box(width: double.infinity, height: 34),
                 ],
               ),
             ),

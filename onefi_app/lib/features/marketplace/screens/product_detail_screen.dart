@@ -81,12 +81,19 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           // ── Product image ────────────────────────
           AnimatedSwitcher(
             duration: AppConstants.animNormal,
-            child: AppNetworkImage(
+            child: Container(
               key: ValueKey(currentImage),
-              url: currentImage,
-              height: 280,
+              color: AppColors.surface,
               width: double.infinity,
-              fit: BoxFit.contain,
+              constraints: const BoxConstraints(maxHeight: 300),
+              child: AspectRatio(
+                aspectRatio: 1.3,
+                child: AppNetworkImage(
+                  url: currentImage,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
           ),
 
