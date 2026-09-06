@@ -290,7 +290,7 @@ class _BrandLogoRow extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         itemCount: _logos.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 10),
+        separatorBuilder: (context, index) => const SizedBox(width: 10),
         itemBuilder: (_, i) {
           final l = _logos[i];
           return Container(

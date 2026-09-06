@@ -356,7 +356,7 @@ class _TopBrandsTabState extends State<_TopBrandsTab> {
           child: ListView.separated(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
             itemCount: _filtered.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 0),
+            separatorBuilder: (context, index) => const SizedBox(height: 0),
             itemBuilder: (_, i) => _BrandCard(brand: _filtered[i]),
           ),
         ),
