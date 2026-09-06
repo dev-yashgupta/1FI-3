@@ -129,14 +129,14 @@ class ProductCard extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 7, vertical: 3),
                           decoration: BoxDecoration(
-                            color: AppColors.emiBadge.withValues(alpha: 0.12),
+                            color: AppColors.emiGreen.withValues(alpha: 0.12),
                             borderRadius: BorderRadius.circular(
                                 AppConstants.radiusSM),
                           ),
                           child: Text(
                             '${emi.isNoCost ? "0%" : "${emi.interestRate}%"} interest',
                             style: TextStyle(
-                              color: AppColors.emiBadge,
+                              color: AppColors.emiGreen,
                               fontSize: 10,
                               fontWeight: FontWeight.w600,
                             ),

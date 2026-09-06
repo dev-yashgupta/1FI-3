@@ -84,7 +84,7 @@ class EmiPlanCard extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: plan.tag == 'Popular'
                                 ? AppColors.primary
-                                : AppColors.emiBadge,
+                                : AppColors.emiGreen,
                             borderRadius:
                                 BorderRadius.circular(AppConstants.radiusPill),
                           ),
@@ -114,7 +114,7 @@ class EmiPlanCard extends StatelessWidget {
                             horizontal: 7, vertical: 2),
                         decoration: BoxDecoration(
                           color: plan.isNoCost
-                              ? AppColors.emiBadge.withValues(alpha: 0.12)
+                              ? AppColors.emiGreen.withValues(alpha: 0.12)
                               : AppColors.warning.withValues(alpha: 0.12),
                           borderRadius:
                               BorderRadius.circular(AppConstants.radiusSM),
@@ -125,7 +125,7 @@ class EmiPlanCard extends StatelessWidget {
                               : '${plan.interestRate}% p.a.',
                           style: TextStyle(
                             color: plan.isNoCost
-                                ? AppColors.emiBadge
+                                ? AppColors.emiGreen
                                 : AppColors.warning,
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
