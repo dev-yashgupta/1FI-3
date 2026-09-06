@@ -11,11 +11,14 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: AppColors.surface,
         elevation: 0,
-        title: const Text('Profile',
-            style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w700,
-                color: Color(0xFF111827))),
+        title: const Text(
+          'Profile',
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+            color: Color(0xFF111827),
+          ),
+        ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1),
           child: Divider(height: 1, color: AppColors.divider),
@@ -24,9 +27,9 @@ class ProfileScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          // ── Avatar card ──────────────────────────────
+          // ── Avatar card ──────────────────────────
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: AppColors.surface,
               borderRadius: BorderRadius.circular(16),
@@ -35,49 +38,54 @@ class ProfileScreen extends StatelessWidget {
             child: Row(
               children: [
                 CircleAvatar(
-                  radius: 28,
+                  radius: 26,
                   backgroundColor: AppColors.primary.withValues(alpha: 0.12),
                   child: const Icon(Icons.person_rounded,
-                      color: AppColors.primary, size: 30),
+                      color: AppColors.primary, size: 28),
                 ),
-                const SizedBox(width: 14),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('1Fi User',
+                    children: const [
+                      Text('1Fi User',
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 15,
                               fontWeight: FontWeight.w700,
                               color: Color(0xFF111827))),
-                      const SizedBox(height: 2),
-                      const Text('user@1fi.in',
+                      SizedBox(height: 2),
+                      Text('user@1fi.in',
                           style: TextStyle(
-                              fontSize: 13,
+                              fontSize: 12,
                               color: Color(0xFF6B7280))),
                     ],
                   ),
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withValues(alpha: 0.08),
-                    borderRadius: BorderRadius.circular(20),
+                // ✅ Fixed: InkWell button instead of ElevatedButton in a Row
+                InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 14, vertical: 7),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text('Edit',
+                        style: TextStyle(
+                            color: AppColors.primary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600)),
                   ),
-                  child: const Text('Edit',
-                      style: TextStyle(
-                          color: AppColors.primary,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600)),
                 ),
               ],
             ),
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
 
-          // ── KYC / limit card ─────────────────────────
+          // ── Limit / KYC card ─────────────────────
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -89,6 +97,7 @@ class ProfileScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
                   child: Column(
@@ -105,27 +114,32 @@ class ProfileScreen extends StatelessWidget {
                               color: Colors.white,
                               fontSize: 26,
                               fontWeight: FontWeight.w800)),
-                      SizedBox(height: 6),
+                      SizedBox(height: 4),
                       Text('Complete KYC to unlock your limit',
                           style: TextStyle(
-                              color: Colors.white60, fontSize: 11.5)),
+                              color: Colors.white60,
+                              fontSize: 11)),
                     ],
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppColors.primary,
-                    elevation: 0,
+                const SizedBox(width: 12),
+                // ✅ Fixed: InkWell instead of ElevatedButton inside Row
+                InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const Text('Start KYC',
+                        style: TextStyle(
+                            color: Color(0xFF3B1FA8),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700)),
                   ),
-                  child: const Text('Start KYC',
-                      style: TextStyle(
-                          fontSize: 12, fontWeight: FontWeight.w700)),
                 ),
               ],
             ),
@@ -133,57 +147,59 @@ class ProfileScreen extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // ── Menu items ────────────────────────────────
+          // ── Menu sections ────────────────────────
           _Section(title: 'My Account', items: const [
-            _Item(Icons.account_balance_wallet_outlined, 'My Portfolio',     false),
-            _Item(Icons.history_rounded,                 'Transaction History', false),
-            _Item(Icons.card_giftcard_outlined,          'Referrals & Rewards', false),
+            _Item(Icons.account_balance_wallet_outlined, 'My Portfolio'),
+            _Item(Icons.history_rounded, 'Transaction History'),
+            _Item(Icons.card_giftcard_outlined, 'Referrals & Rewards'),
           ]),
           const SizedBox(height: 12),
           _Section(title: 'Settings', items: const [
-            _Item(Icons.notifications_outlined,  'Notifications', false),
-            _Item(Icons.security_outlined,        'Security',      false),
-            _Item(Icons.language_rounded,         'Language',      false),
+            _Item(Icons.notifications_outlined, 'Notifications'),
+            _Item(Icons.security_outlined, 'Security'),
+            _Item(Icons.language_rounded, 'Language'),
           ]),
           const SizedBox(height: 12),
           _Section(title: 'Support', items: const [
-            _Item(Icons.help_outline_rounded,     'Help & Support', false),
-            _Item(Icons.info_outline_rounded,     'About 1Fi',      false),
+            _Item(Icons.help_outline_rounded, 'Help & Support'),
+            _Item(Icons.info_outline_rounded, 'About 1Fi'),
           ]),
           const SizedBox(height: 12),
-          // Logout
-          GestureDetector(
+
+          // ── Logout ───────────────────────────────
+          InkWell(
             onTap: () {},
+            borderRadius: BorderRadius.circular(12),
             child: Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 16, vertical: 14),
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.divider),
               ),
               child: Row(
-                children: [
-                  const Icon(Icons.logout_rounded,
+                children: const [
+                  Icon(Icons.logout_rounded,
                       color: Color(0xFFEF4444), size: 20),
-                  const SizedBox(width: 12),
-                  const Expanded(
-                    child: Text('Logout',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Color(0xFFEF4444))),
-                  ),
+                  SizedBox(width: 12),
+                  Text('Logout',
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Color(0xFFEF4444))),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 16),
         ],
       ),
     );
   }
 }
+
+// ─── Reusable section widget ──────────────────────────────────────────────────
 
 class _Section extends StatelessWidget {
   final String title;
@@ -197,12 +213,15 @@ class _Section extends StatelessWidget {
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 4, bottom: 8),
-          child: Text(title.toUpperCase(),
-              style: const TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF9CA3AF),
-                  letterSpacing: 1.0)),
+          child: Text(
+            title.toUpperCase(),
+            style: const TextStyle(
+              fontSize: 10,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF9CA3AF),
+              letterSpacing: 1.0,
+            ),
+          ),
         ),
         Container(
           decoration: BoxDecoration(
@@ -215,9 +234,17 @@ class _Section extends StatelessWidget {
               final isLast = e.key == items.length - 1;
               return Column(
                 children: [
-                  GestureDetector(
+                  InkWell(
                     onTap: () {},
-                    child: Container(
+                    borderRadius: BorderRadius.vertical(
+                      top: e.key == 0
+                          ? const Radius.circular(12)
+                          : Radius.zero,
+                      bottom: isLast
+                          ? const Radius.circular(12)
+                          : Radius.zero,
+                    ),
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 16, vertical: 14),
                       child: Row(
@@ -226,11 +253,14 @@ class _Section extends StatelessWidget {
                               color: AppColors.primary, size: 20),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: Text(e.value.label,
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w500,
-                                    color: Color(0xFF111827))),
+                            child: Text(
+                              e.value.label,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: Color(0xFF111827),
+                              ),
+                            ),
                           ),
                           const Icon(Icons.chevron_right_rounded,
                               color: Color(0xFFD1D5DB), size: 20),
@@ -239,10 +269,7 @@ class _Section extends StatelessWidget {
                     ),
                   ),
                   if (!isLast)
-                    Divider(
-                        height: 1,
-                        indent: 48,
-                        color: AppColors.divider),
+                    const Divider(height: 1, indent: 48),
                 ],
               );
             }).toList(),
@@ -256,6 +283,5 @@ class _Section extends StatelessWidget {
 class _Item {
   final IconData icon;
   final String label;
-  final bool destructive;
-  const _Item(this.icon, this.label, this.destructive);
+  const _Item(this.icon, this.label);
 }

@@ -131,7 +131,10 @@ class AppTheme {
           disabledBackgroundColor: AppColors.border,
           disabledForegroundColor: AppColors.textHint,
           elevation: 0,
-          minimumSize: const Size(double.infinity, 52),
+          // Use Size(0,52) not Size(double.infinity,52) — the latter crashes
+          // when the button is inside a Row (unconstrained width).
+          // Callers that want full-width wrap in SizedBox(width: double.infinity).
+          minimumSize: const Size(0, 52),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28),
           ),
@@ -148,7 +151,7 @@ class AppTheme {
         style: OutlinedButton.styleFrom(
           foregroundColor: AppColors.primary,
           side: const BorderSide(color: AppColors.primary, width: 1.5),
-          minimumSize: const Size(double.infinity, 48),
+          minimumSize: const Size(0, 48),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28),
           ),
