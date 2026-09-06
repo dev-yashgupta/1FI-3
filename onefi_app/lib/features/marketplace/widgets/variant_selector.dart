@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../core/theme/app_text_styles.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/utils/currency_formatter.dart';
 import '../../../data/models/product.dart';
 import '../../../data/models/product_variant.dart';
 
-/// Reusable variant selector — shows storage chips and color swatches.
+/// Variant selector — storage chips + color swatches with price diff.
 class VariantSelector extends StatelessWidget {
   final Product product;
   final ProductVariant? selected;
@@ -20,59 +20,57 @@ class VariantSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final storages = product.uniqueStorages;
-    final selectedStorage = selected?.storage ?? storages.first;
-
-    // Variants matching current storage
-    final colorVariants = product.variants
+    final storages         = product.uniqueStorages;
+    final selectedStorage  = selected?.storage ?? storages.first;
+    final colorVariants    = product.variants
         .where((v) => v.storage == selectedStorage)
         .toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // ── Storage selector ──────────────────────
+        // ── Storage ──────────────────────────────
         if (storages.length > 1) ...[
-          Text('Storage', style: AppTextStyles.labelLarge),
+          _Label('Storage'),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
             runSpacing: 8,
             children: storages.map((s) {
-              final isSelected = s == selectedStorage;
-              // Find first in-stock variant for this storage
-              final variantForStorage = product.variants.firstWhere(
+              final isActive = s == selectedStorage;
+              final variant = product.variants.firstWhere(
                 (v) => v.storage == s && v.inStock,
-                orElse: () => product.variants.firstWhere(
-                  (v) => v.storage == s,
-                  orElse: () => product.variants.first,
-                ),
+                orElse: () => product.variants
+                    .firstWhere((v) => v.storage == s),
               );
+              // Price diff vs currently selected
+              final diff = selected != null
+                  ? variant.price - selected!.price
+                  : 0.0;
               return _StorageChip(
                 label: s,
-                isSelected: isSelected,
-                onTap: () => onChanged(variantForStorage),
+                priceDiff: diff,
+                isSelected: isActive,
+                inStock: variant.inStock,
+                onTap: () => onChanged(variant),
               );
             }).toList(),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 18),
         ],
 
-        // ── Color selector ────────────────────────
+        // ── Color ─────────────────────────────────
         if (colorVariants.length > 1) ...[
-          Text('Color', style: AppTextStyles.labelLarge),
+          _Label('Color'),
           const SizedBox(height: 8),
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: colorVariants.map((v) {
-              final isSelected = v.id == selected?.id;
-              return _ColorChip(
-                variant: v,
-                isSelected: isSelected,
-                onTap: () => onChanged(v),
-              );
-            }).toList(),
+            children: colorVariants.map((v) => _ColorChip(
+                  variant: v,
+                  isSelected: v.id == selected?.id,
+                  onTap: () => onChanged(v),
+                )).toList(),
           ),
         ],
       ],
@@ -80,42 +78,102 @@ class VariantSelector extends StatelessWidget {
   }
 }
 
+// ─── Label ────────────────────────────────────────────────────────────────────
+
+class _Label extends StatelessWidget {
+  final String text;
+  const _Label(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: const TextStyle(
+        fontSize: 13,
+        fontWeight: FontWeight.w700,
+        color: Color(0xFF374151),
+      ),
+    );
+  }
+}
+
+// ─── Storage chip ─────────────────────────────────────────────────────────────
+
 class _StorageChip extends StatelessWidget {
   final String label;
-  final bool isSelected;
+  final double priceDiff;
+  final bool isSelected, inStock;
   final VoidCallback onTap;
 
   const _StorageChip({
     required this.label,
+    required this.priceDiff,
     required this.isSelected,
+    required this.inStock,
     required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: AppConstants.animFast,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : AppColors.surface,
-          borderRadius: BorderRadius.circular(AppConstants.radiusPill),
-          border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
-            width: isSelected ? 2 : 1,
+      onTap: inStock ? onTap : null,
+      child: Opacity(
+        opacity: inStock ? 1.0 : 0.45,
+        child: AnimatedContainer(
+          duration: AppConstants.animFast,
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 9),
+          decoration: BoxDecoration(
+            color: isSelected ? AppColors.primary : AppColors.surface,
+            borderRadius: BorderRadius.circular(AppConstants.radiusPill),
+            border: Border.all(
+              color: isSelected ? AppColors.primary : AppColors.border,
+              width: isSelected ? 2 : 1,
+            ),
           ),
-        ),
-        child: Text(
-          label,
-          style: AppTextStyles.labelLarge.copyWith(
-            color: isSelected ? Colors.white : AppColors.textPrimary,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: isSelected ? Colors.white : const Color(0xFF111827),
+                ),
+              ),
+              // Show price diff on non-selected chips
+              if (!isSelected && priceDiff != 0) ...[
+                const SizedBox(height: 2),
+                Text(
+                  priceDiff > 0
+                      ? '+${CurrencyFormatter.format(priceDiff)}'
+                      : CurrencyFormatter.format(priceDiff),
+                  style: TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.w600,
+                    color: priceDiff > 0
+                        ? const Color(0xFF9CA3AF)
+                        : AppColors.success,
+                  ),
+                ),
+              ],
+              if (!inStock) ...[
+                const SizedBox(height: 2),
+                const Text('Out of stock',
+                    style: TextStyle(
+                        fontSize: 8,
+                        color: AppColors.error,
+                        fontWeight: FontWeight.w600)),
+              ],
+            ],
           ),
         ),
       ),
     );
   }
 }
+
+// ─── Color chip ───────────────────────────────────────────────────────────────
 
 class _ColorChip extends StatelessWidget {
   final ProductVariant variant;
@@ -139,7 +197,7 @@ class _ColorChip extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           decoration: BoxDecoration(
             color: isSelected
-                ? AppColors.primary.withValues(alpha: 0.08)
+                ? AppColors.primary.withValues(alpha: 0.07)
                 : AppColors.surface,
             borderRadius: BorderRadius.circular(AppConstants.radiusPill),
             border: Border.all(
@@ -150,31 +208,46 @@ class _ColorChip extends StatelessWidget {
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Color swatch dot
+              // Color swatch with border
               Container(
-                width: 14,
-                height: 14,
+                width: 16,
+                height: 16,
                 decoration: BoxDecoration(
                   color: variant.colorSwatch,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Colors.black.withValues(alpha: 0.1),
+                    color: Colors.black.withValues(alpha: 0.12),
                     width: 1,
                   ),
                 ),
               ),
-              const SizedBox(width: 6),
+              const SizedBox(width: 7),
               Text(
                 variant.color,
-                style: AppTextStyles.labelMedium.copyWith(
-                  color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                style: TextStyle(
+                  fontSize: 12.5,
+                  fontWeight:
+                      isSelected ? FontWeight.w700 : FontWeight.w500,
+                  color: isSelected
+                      ? AppColors.primary
+                      : const Color(0xFF374151),
                 ),
               ),
               if (!variant.inStock) ...[
-                const SizedBox(width: 4),
-                Text('(OOS)',
-                    style: AppTextStyles.caption
-                        .copyWith(color: AppColors.error)),
+                const SizedBox(width: 5),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 5, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.error.withValues(alpha: 0.10),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: const Text('OOS',
+                      style: TextStyle(
+                          fontSize: 8,
+                          color: AppColors.error,
+                          fontWeight: FontWeight.w700)),
+                ),
               ],
             ],
           ),
