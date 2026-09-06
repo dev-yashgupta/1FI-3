@@ -2,54 +2,57 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_colors.dart';
 
-/// Persistent bottom navigation shell wrapping all top-level tabs.
+/// Persistent bottom navigation — matches 1Fi floating white pill nav bar.
 class AppShell extends StatelessWidget {
   final Widget child;
-
   const AppShell({super.key, required this.child});
 
   static const _tabs = [
-    _TabItem(label: 'Home', icon: Icons.home_outlined, activeIcon: Icons.home_rounded, path: '/home'),
-    _TabItem(label: 'Shop', icon: Icons.storefront_outlined, activeIcon: Icons.storefront_rounded, path: '/shop'),
-    _TabItem(label: 'EMI Dues', icon: Icons.receipt_long_outlined, activeIcon: Icons.receipt_long_rounded, path: '/emi-dues'),
-    _TabItem(label: 'Limit', icon: Icons.bar_chart_outlined, activeIcon: Icons.bar_chart_rounded, path: '/limit'),
-    _TabItem(label: 'Profile', icon: Icons.person_outline_rounded, activeIcon: Icons.person_rounded, path: '/profile'),
+    _Tab('Home',     Icons.home_outlined,         Icons.home_rounded,          '/home'),
+    _Tab('Shop',     Icons.storefront_outlined,    Icons.storefront_rounded,    '/shop'),
+    _Tab('EMI Dues', Icons.receipt_long_outlined,  Icons.receipt_long_rounded,  '/emi-dues'),
+    _Tab('Limit',    Icons.bar_chart_outlined,     Icons.bar_chart_rounded,     '/limit'),
+    _Tab('Profile',  Icons.person_outline_rounded, Icons.person_rounded,        '/profile'),
   ];
 
-  int _currentIndex(BuildContext context) {
-    final location = GoRouterState.of(context).uri.toString();
+  int _idx(BuildContext ctx) {
+    final loc = GoRouterState.of(ctx).uri.toString();
     for (int i = 0; i < _tabs.length; i++) {
-      if (location.startsWith(_tabs[i].path)) return i;
+      if (loc.startsWith(_tabs[i].path)) return i;
     }
     return 0;
   }
 
   @override
   Widget build(BuildContext context) {
-    final currentIndex = _currentIndex(context);
+    final idx = _idx(context);
+    final bottomPad = MediaQuery.of(context).padding.bottom;
 
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: child,
       bottomNavigationBar: Container(
+        margin: EdgeInsets.fromLTRB(12, 0, 12, bottomPad > 0 ? bottomPad : 12),
         decoration: BoxDecoration(
           color: AppColors.navBackground,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.06),
-              blurRadius: 16,
-              offset: const Offset(0, -2),
-            ),
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: const [
+            BoxShadow(color: Color(0x18000000), blurRadius: 24, offset: Offset(0, 4)),
           ],
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: ClipRRect(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-          child: BottomNavigationBar(
-            currentIndex: currentIndex,
-            onTap: (i) => context.go(_tabs[i].path),
-            items: _tabs.map((t) => BottomNavigationBarItem(
-              icon: Icon(t.icon),
-              activeIcon: Icon(t.activeIcon),
+          borderRadius: BorderRadius.circular(24),
+          child: NavigationBar(
+            selectedIndex: idx,
+            onDestinationSelected: (i) => context.go(_tabs[i].path),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            indicatorColor: AppColors.primary.withValues(alpha: 0.10),
+            height: 64,
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+            destinations: _tabs.map((t) => NavigationDestination(
+              icon:          Icon(t.icon,       color: AppColors.navUnselected, size: 22),
+              selectedIcon:  Icon(t.activeIcon, color: AppColors.navSelected,   size: 22),
               label: t.label,
             )).toList(),
           ),
@@ -59,16 +62,8 @@ class AppShell extends StatelessWidget {
   }
 }
 
-class _TabItem {
-  final String label;
-  final IconData icon;
-  final IconData activeIcon;
-  final String path;
-
-  const _TabItem({
-    required this.label,
-    required this.icon,
-    required this.activeIcon,
-    required this.path,
-  });
+class _Tab {
+  final String label, path;
+  final IconData icon, activeIcon;
+  const _Tab(this.label, this.icon, this.activeIcon, this.path);
 }
