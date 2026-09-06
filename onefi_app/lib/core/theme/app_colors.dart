@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 /// 1Fi brand color palette — pixel-matched from live app screenshots.
 abstract class AppColors {
-  // ── Primary purple (exact 1Fi brand) ───────────────
-  static const Color primary      = Color(0xFF6C3CE1); // deep purple CTA
-  static const Color primaryDark  = Color(0xFF3B1FA8); // banner dark end
+  // ── Primary purple ──────────────────────────────────
+  static const Color primary      = Color(0xFF6C3CE1);
+  static const Color primaryDark  = Color(0xFF3B1FA8);
   static const Color primaryLight = Color(0xFF8B5CF6);
 
   // ── Accent yellow ───────────────────────────────────
@@ -12,7 +12,7 @@ abstract class AppColors {
   static const Color accentLight = Color(0xFFFCD34D);
 
   // ── Background ──────────────────────────────────────
-  static const Color background     = Color(0xFFF2F2F7); // exact iOS grey
+  static const Color background     = Color(0xFFF2F2F7);
   static const Color surface        = Color(0xFFFFFFFF);
   static const Color surfaceVariant = Color(0xFFF0EDF8);
 
@@ -22,9 +22,11 @@ abstract class AppColors {
   static const Color textHint      = Color(0xFFB0B0C0);
   static const Color textOnPrimary = Color(0xFFFFFFFF);
 
-  // ── Accent green (EMI badge) ─────────────────────────
-  static const Color emiGreen     = Color(0xFF10B981);
-  static const Color emiGreenBg   = Color(0xFFD1FAE5);
+  // ── EMI / teal badge ─────────────────────────────────
+  static const Color emiBadge   = Color(0xFF10B981); // kept for all widgets
+  static const Color emiBadgeText = Color(0xFFFFFFFF);
+  static const Color emiGreen   = Color(0xFF10B981);
+  static const Color emiGreenBg = Color(0xFFD1FAE5);
 
   // ── Status ──────────────────────────────────────────
   static const Color success = Color(0xFF10B981);
@@ -34,6 +36,9 @@ abstract class AppColors {
   // ── Divider / border ────────────────────────────────
   static const Color divider = Color(0xFFE5E7EB);
   static const Color border  = Color(0xFFD1D5DB);
+
+  // ── Card shadow (kept for app_theme.dart ColorScheme) ──
+  static const Color cardShadow = Color(0x1A6C3CE1);
 
   // ── Shimmer ─────────────────────────────────────────
   static const Color shimmerBase      = Color(0xFFE5E7EB);
