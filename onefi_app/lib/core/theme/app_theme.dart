@@ -35,6 +35,7 @@ class AppTheme {
         outlineVariant: AppColors.divider,
         shadow: AppColors.cardShadow,
         scrim: Color(0x80000000),
+        inverseSurface: AppColors.textPrimary,
         onInverseSurface: AppColors.textOnPrimary,
         inversePrimary: AppColors.primaryLight,
       ),
