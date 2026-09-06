@@ -292,7 +292,7 @@ class _MarketplaceHeader extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
               itemCount: categories.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 8),
+              separatorBuilder: (context, index) => const SizedBox(width: 8),
               itemBuilder: (_, i) {
                 final cat = categories[i];
                 final isSelected = cat == selectedCategory;
@@ -368,7 +368,7 @@ class _LoadingGrid extends StatelessWidget {
         childAspectRatio: 0.62,
       ),
       itemCount: 6,
-      itemBuilder: (_, __) => const ProductCardShimmer(),
+      itemBuilder: (context, index) => const ProductCardShimmer(),
     );
   }
 }
