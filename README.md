@@ -678,33 +678,4 @@ flutter run --dart-define=USE_MOCK=false \
 
 8. **Web fullscreen** — uses `dart:js_interop` + `package:web` with a no-op stub for mobile. This is the modern Flutter web approach, not the deprecated `dart:html`.
 
----
 
-## 17. Known Limitations
-
-1. **No authentication** — the app has no login/signup. The assignment scope is specifically the Shop/Marketplace feature.
-
-2. **No cart or checkout** — the flow ends at EMI confirmation. Real payment processing is explicitly out of scope per the assignment.
-
-3. **Product images from Unsplash** — stable, license-free URLs. May load slightly slower on first render; subsequent loads are cached by `cached_network_image`.
-
-4. **Backend not deployed** — the Express API runs locally. Deployment to Railway, Render, or Fly.io is straightforward but outside the assignment scope.
-
-5. **No pagination** — all products load in one request. The architecture supports adding `page`/`limit` query params at the repository layer without changing the UI.
-
-6. **Wishlist state is local** — the wishlist heart on product cards uses local widget state. Persistence would require a backend endpoint + Riverpod provider.
-
-7. **Web CORS** — when running the Flutter web app and the backend on the same machine, `localhost:3000` works without CORS issues. Cross-origin deployments would need explicit CORS configuration.
-
----
-
-## Author
-
-**Yash Gupta**
-SDE Intern Candidate — 1Fi
-
-> *"The goal was not just to build a feature, but to build it as if it were already part of 1Fi."*
-
----
-
-*This README was last updated: September 2026*
