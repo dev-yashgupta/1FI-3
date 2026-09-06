@@ -26,7 +26,6 @@ class _MarketplaceScreenState extends ConsumerState<MarketplaceScreen> {
   @override
   void initState() {
     super.initState();
-    // Load products on first mount
     Future.microtask(
         () => ref.read(marketplaceProvider.notifier).loadProducts());
   }
@@ -53,6 +52,14 @@ class _MarketplaceScreenState extends ConsumerState<MarketplaceScreen> {
     return list;
   }
 
+  // Responsive column count based on available width
+  int _crossAxisCount(double width) {
+    if (width >= 1200) return 4;
+    if (width >= 800)  return 3;
+    if (width >= 500)  return 3;
+    return 2;
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(marketplaceProvider);
@@ -60,7 +67,14 @@ class _MarketplaceScreenState extends ConsumerState<MarketplaceScreen> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text(AppConstants.marketplaceTitle),
+        title: const Text(
+          '1Fi Marketplace',
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+            color: Color(0xFF111827),
+          ),
+        ),
         backgroundColor: AppColors.surface,
         elevation: 0,
         bottom: PreferredSize(
@@ -70,63 +84,125 @@ class _MarketplaceScreenState extends ConsumerState<MarketplaceScreen> {
       ),
       body: Column(
         children: [
-          // ── Search + filter bar ──────────────────
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 0),
+          // ── Search bar ───────────────────────────
+          Container(
+            color: AppColors.surface,
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 10),
             child: TextField(
               controller: _searchController,
               onChanged: (v) => setState(() => _searchQuery = v),
-              decoration: const InputDecoration(
+              style: const TextStyle(fontSize: 14),
+              decoration: InputDecoration(
                 hintText: 'Search products...',
-                prefixIcon: Icon(Icons.search_rounded, size: 20),
+                hintStyle:
+                    const TextStyle(color: Color(0xFFB0B0C0), fontSize: 14),
+                prefixIcon: const Icon(Icons.search_rounded,
+                    color: Color(0xFFB0B0C0), size: 20),
+                suffixIcon: _searchQuery.isNotEmpty
+                    ? IconButton(
+                        icon: const Icon(Icons.clear_rounded,
+                            color: Color(0xFFB0B0C0), size: 18),
+                        onPressed: () {
+                          _searchController.clear();
+                          setState(() => _searchQuery = '');
+                        },
+                      )
+                    : null,
+                filled: true,
+                fillColor: AppColors.background,
+                contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 12),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppConstants.radiusPill),
+                  borderSide: BorderSide.none,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppConstants.radiusPill),
+                  borderSide:
+                      const BorderSide(color: Color(0xFFE5E7EB)),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppConstants.radiusPill),
+                  borderSide: const BorderSide(
+                      color: AppColors.primary, width: 1.5),
+                ),
               ),
             ),
           ),
+
           // ── Category chips ───────────────────────
-          SizedBox(
-            height: 52,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: _categories.length,
-              separatorBuilder: (context, index) => const SizedBox(width: 8),
-              itemBuilder: (_, i) {
-                final cat = _categories[i];
-                final selected = cat == _selectedCategory;
-                return FilterChip(
-                  label: Text(cat),
-                  selected: selected,
-                  onSelected: (_) =>
-                      setState(() => _selectedCategory = cat),
-                  backgroundColor: AppColors.surface,
-                  selectedColor: AppColors.primary,
-                  labelStyle: TextStyle(
-                    color: selected ? Colors.white : AppColors.textPrimary,
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
+          Container(
+            color: AppColors.surface,
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 46,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    itemCount: _categories.length,
+                    separatorBuilder: (context, index) =>
+                        const SizedBox(width: 8),
+                    itemBuilder: (_, i) {
+                      final cat = _categories[i];
+                      final isSelected = cat == _selectedCategory;
+                      return GestureDetector(
+                        onTap: () =>
+                            setState(() => _selectedCategory = cat),
+                        child: AnimatedContainer(
+                          duration: AppConstants.animFast,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? AppColors.primary
+                                : AppColors.background,
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(
+                              color: isSelected
+                                  ? AppColors.primary
+                                  : const Color(0xFFE5E7EB),
+                            ),
+                          ),
+                          child: Text(
+                            cat,
+                            style: TextStyle(
+                              color: isSelected
+                                  ? Colors.white
+                                  : const Color(0xFF374151),
+                              fontSize: 13,
+                              fontWeight: isSelected
+                                  ? FontWeight.w600
+                                  : FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
-                  side: BorderSide(
-                    color: selected ? AppColors.primary : AppColors.border,
-                  ),
-                  showCheckmark: false,
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                );
-              },
+                ),
+                Divider(height: 1, color: AppColors.divider),
+              ],
             ),
           ),
-          const Divider(height: 1, color: AppColors.divider),
 
-          // ── Body ─────────────────────────────────
+          // ── Product grid ─────────────────────────
           Expanded(
-            child: _buildBody(state),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return _buildBody(state, constraints.maxWidth);
+              },
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildBody(MarketplaceState state) {
-    if (state.isLoading) return _LoadingGrid();
+  Widget _buildBody(MarketplaceState state, double width) {
+    if (state.isLoading) {
+      return _LoadingGrid(crossAxisCount: _crossAxisCount(width));
+    }
 
     if (state.hasError) {
       return ErrorView(
@@ -153,34 +229,50 @@ class _MarketplaceScreenState extends ConsumerState<MarketplaceScreen> {
       );
     }
 
+    final cols = _crossAxisCount(width);
+
     return RefreshIndicator(
       color: AppColors.primary,
-      onRefresh: () => ref.read(marketplaceProvider.notifier).loadProducts(),
+      onRefresh: () =>
+          ref.read(marketplaceProvider.notifier).loadProducts(),
       child: GridView.builder(
-        padding: const EdgeInsets.all(AppConstants.spaceMD),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.60,
+        padding: const EdgeInsets.all(16),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: cols,
           crossAxisSpacing: 12,
           mainAxisSpacing: 12,
+          // No fixed childAspectRatio — let cards size naturally
+          mainAxisExtent: _cardHeight(width, cols),
         ),
         itemCount: filtered.length,
         itemBuilder: (_, i) => ProductCard(product: filtered[i]),
       ),
     );
   }
+
+  /// Compute a safe card height based on available column width.
+  double _cardHeight(double gridWidth, int cols) {
+    final cardWidth = (gridWidth - 32 - (cols - 1) * 12) / cols;
+    final imageHeight = cardWidth / 1.1; // matches AspectRatio(1.1)
+    // info area: brand(14) + name(34) + price(18) + mrp(15) + emi(20) + btn(34) + padding(35)
+    const infoHeight = 170.0;
+    return imageHeight + infoHeight;
+  }
 }
 
 class _LoadingGrid extends StatelessWidget {
+  final int crossAxisCount;
+  const _LoadingGrid({required this.crossAxisCount});
+
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      padding: const EdgeInsets.all(AppConstants.spaceMD),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        childAspectRatio: 0.60,
+      padding: const EdgeInsets.all(16),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: crossAxisCount,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
+        childAspectRatio: 0.65,
       ),
       itemCount: 6,
       itemBuilder: (context, index) => const ProductCardShimmer(),
