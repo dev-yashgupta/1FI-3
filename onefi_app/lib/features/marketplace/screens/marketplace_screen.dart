@@ -710,16 +710,28 @@ class _LoadingGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: cols,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 0.62,
-      ),
-      itemCount: 6,
-      itemBuilder: (context, index) => const ProductCardShimmer(),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        const hPad  = 16.0;
+        const gap   = 12.0;
+        final cardW = (width - hPad * 2 - gap * (cols - 1)) / cols;
+        final imgH  = cardW / 1.05;
+        const infoH = 168.0;
+        final cardH = imgH + infoH;
+
+        return GridView.builder(
+          padding: const EdgeInsets.all(16),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: cols,
+            crossAxisSpacing: gap,
+            mainAxisSpacing: gap,
+            mainAxisExtent: cardH,
+          ),
+          itemCount: 6,
+          itemBuilder: (context, index) => const ProductCardShimmer(),
+        );
+      },
     );
   }
 }
