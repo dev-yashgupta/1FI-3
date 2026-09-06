@@ -9,7 +9,11 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: CustomScrollView(
+      body: Center(
+        child: ConstrainedBox(
+          // Max 700px on web/tablet — matches 1Fi's mobile-first layout
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: CustomScrollView(
         slivers: [
           // ── 1. Hero banner ────────────────────────
           SliverToBoxAdapter(child: _HeroBanner()),
@@ -41,6 +45,8 @@ class HomeScreen extends StatelessWidget {
 
           const SliverToBoxAdapter(child: SizedBox(height: 24)),
         ],
+      ),
+        ),
       ),
     );
   }
@@ -446,7 +452,7 @@ class _BrandLogoRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 80,
+      height: 82,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -455,7 +461,7 @@ class _BrandLogoRow extends StatelessWidget {
         itemBuilder: (_, i) {
           final l = _logos[i];
           return Container(
-            width: 72,
+            width: 74,
             decoration: BoxDecoration(
               color: AppColors.surface,
               borderRadius: BorderRadius.circular(12),
@@ -466,16 +472,19 @@ class _BrandLogoRow extends StatelessWidget {
               children: [
                 Icon(l.icon, color: l.color, size: 22),
                 const SizedBox(height: 5),
-                Text(
-                  l.name,
-                  style: TextStyle(
-                    color: l.color,
-                    fontSize: 9,
-                    fontWeight: FontWeight.w700,
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  child: Text(
+                    l.name,
+                    style: TextStyle(
+                      color: l.color,
+                      fontSize: 9,
+                      fontWeight: FontWeight.w700,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
