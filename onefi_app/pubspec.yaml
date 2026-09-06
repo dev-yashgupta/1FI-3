@@ -23,6 +23,8 @@ dependencies:
   shimmer: ^3.0.0
   # JSON
   json_annotation: ^4.9.0
+  # Web fullscreen API
+  web: ^1.1.1
 
 dev_dependencies:
   flutter_test:
